@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "minecraft_mod:block/ender_core"
+    }
+  }
+}

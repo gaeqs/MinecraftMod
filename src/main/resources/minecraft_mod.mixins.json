@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "io.github.gaeqs.minecraftmod.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": []
+}
