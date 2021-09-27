@@ -9,10 +9,15 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext
 import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.Entity
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vector4f
+import kotlin.math.sin
 
-class TopTextureFeature<T, M : EntityModel<T>>(context: FeatureRendererContext<T, M>) : FeatureRenderer<T, M>(context)
-        where T : Entity, T : TopTextured {
+class TopTextureFeature<T, M : EntityModel<T>>(
+    context: FeatureRendererContext<T, M>,
+    private val waveSpeed: Float = 0.0f,
+    private val waveAmplitude: Float = 0.0f
+) : FeatureRenderer<T, M>(context) where T : Entity, T : TopTextured {
 
     companion object {
         private val VERTICES = arrayOf(-0.5f to 0.5f, -0.5f to -0.5f, 0.5f to -0.5f, 0.5f to 0.5f)
@@ -31,11 +36,13 @@ class TopTextureFeature<T, M : EntityModel<T>>(context: FeatureRendererContext<T
         headPitch: Float
     ) {
         val texture = entity.topTexture ?: return
-
         val offset = entity.displayOffset
 
+        val nanos = entity.age + tickDelta
+        val wave = MathHelper.sin(nanos * waveSpeed) * waveAmplitude
+
         matrices.push()
-        matrices.translate(offset.x, offset.y, offset.z)
+        matrices.translate(offset.x, offset.y + wave, offset.z)
 
         val consumer = vertexConsumers.getBuffer(RenderLayer.getEntityAlpha(texture, 0.5f))
 

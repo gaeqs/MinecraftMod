@@ -8,18 +8,11 @@ import net.minecraft.client.render.entity.MobEntityRenderer
 import net.minecraft.util.Identifier
 
 class ExampleEntityRenderer(context: EntityRenderDispatcher) :
-    MobEntityRenderer<ExampleEntity, ExampleEntityModel<ExampleEntity>>(
-        context,
-        ExampleEntityModel(),
-        0.3f
-    ) {
+    MobEntityRenderer<ExampleEntity, ExampleEntityModel<ExampleEntity>>(context, ExampleEntityModel(), 0.3f) {
 
     init {
-        addFeature(
-            TopTextureFeature(this)
-        )
+        addFeature(TopTextureFeature(this, Math.PI.toFloat() / 20.0f, 0.2f))
     }
-
 
     override fun getTexture(entity: ExampleEntity): Identifier {
         return Identifier(MinecraftMod.MOD_ID, "textures/entity/example/example.png")

@@ -25,8 +25,18 @@ class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World) : PathA
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
         }
-
     }
+
+    override var topTexture: Identifier?
+        get() {
+            val string = dataTracker.get(TRACKED_TOP_MESSAGE)
+            return if (string.isNullOrEmpty()) null else Identifier(string)
+        }
+        set(value) {
+            dataTracker.set(TRACKED_TOP_MESSAGE, value?.toString() ?: "")
+        }
+
+    override var displayOffset = Vec3d(0.0, 0.0, 0.0)
 
     override fun initDataTracker() {
         super.initDataTracker()
@@ -43,15 +53,5 @@ class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World) : PathA
         topTexture = if (attacker == null) MESSAGE_1 else MESSAGE_2
     }
 
-    override var topTexture: Identifier?
-        get() {
-            val string = dataTracker.get(TRACKED_TOP_MESSAGE)
-            return if (string.isNullOrEmpty()) null else Identifier(string)
-        }
-        set(value) {
-            dataTracker.set(TRACKED_TOP_MESSAGE, value?.toString() ?: "")
-        }
-
-    override var displayOffset = Vec3d(0.0, 0.0, 0.0)
 
 }
