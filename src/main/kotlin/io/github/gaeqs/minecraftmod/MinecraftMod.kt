@@ -1,12 +1,18 @@
 package io.github.gaeqs.minecraftmod
 
+import io.github.gaeqs.minecraftmod.entity.ExampleEntity
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
+import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
 import net.minecraft.block.ShapeContext
+import net.minecraft.entity.EntityDimensions
+import net.minecraft.entity.EntityType
+import net.minecraft.entity.SpawnGroup
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemGroup
 import net.minecraft.particle.ParticleTypes
@@ -32,7 +38,7 @@ class EnderCoreBlock : Block(FabricBlockSettings.of(Material.METAL).strength(0.4
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext)
             : VoxelShape {
-        return VoxelShapes.cuboid(0.1, 0.0,0.1, 0.9, 0.8, 0.9)
+        return VoxelShapes.cuboid(0.1, 0.0, 0.1, 0.9, 0.8, 0.9)
     }
 
     override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
@@ -60,15 +66,20 @@ class EnderCoreBlock : Block(FabricBlockSettings.of(Material.METAL).strength(0.4
 object MinecraftMod : ModInitializer {
 
     const val MOD_ID = "minecraft_mod"
+    val EMPTY_IDENTIFIER = Identifier(MOD_ID, "empty")
+
     val EXAMPLE_BLOCK = ExampleBlock()
-    var EXAMPLE_BLOCK_ITEM = BlockItem(EXAMPLE_BLOCK, FabricItemSettings().group(ItemGroup.MISC))
+    val EXAMPLE_BLOCK_ITEM = BlockItem(EXAMPLE_BLOCK, FabricItemSettings().group(ItemGroup.MISC))
 
     val ENDER_CORE = EnderCoreBlock()
-    var ENDER_CORE_ITEM = BlockItem(ENDER_CORE, FabricItemSettings().group(ItemGroup.MISC))
+    val ENDER_CORE_ITEM = BlockItem(ENDER_CORE, FabricItemSettings().group(ItemGroup.MISC))
 
-    fun doSomething (string : String) {
-
-    }
+    val EXAMPLE_ENTITY = Registry.register(Registry.ENTITY_TYPE, Identifier(MOD_ID, "example"),
+        FabricEntityTypeBuilder.create(
+            SpawnGroup.CREATURE,
+            EntityType.EntityFactory<ExampleEntity> { type, world -> ExampleEntity(type, world) }
+        ).dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build()
+    )
 
     override fun onInitialize() {
         println("Example mod has been initialized.")
@@ -76,5 +87,12 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "example_block"), EXAMPLE_BLOCK_ITEM)
         Registry.register(Registry.BLOCK, Identifier(MOD_ID, "ender_core"), ENDER_CORE)
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "ender_core"), ENDER_CORE_ITEM)
+        registerExampleEntity()
+    }
+
+
+    private fun registerExampleEntity() {
+
+        FabricDefaultAttributeRegistry.register(EXAMPLE_ENTITY, ExampleEntity.createExampleEntityAttributes())
     }
 }
