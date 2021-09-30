@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "minecraft_mod",
+  "id": "magic_end",
   "version": "${version}",
-  "name": "Minecraft Mod",
+  "name": "Magic end",
   "description": "Mod Description",
   "authors": [
     "Author"
@@ -13,7 +13,7 @@
     "sources": "https://example.com/"
   },
   "license": "GNU Lesser General Public License version 3 (LGPLv3)",
-  "icon": "assets/minecraft_mod/icon.png",
+  "icon": "assets/magic_end/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -36,7 +36,7 @@
     ]
   },
   "mixins": [
-    "minecraft_mod.mixins.json"
+    "end_window.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.6",
