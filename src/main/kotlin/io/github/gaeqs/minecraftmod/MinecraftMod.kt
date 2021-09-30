@@ -34,12 +34,23 @@ class ExampleBlock : Block(FabricBlockSettings.of(Material.METAL).strength(0.4f)
 
 }
 
+class EnderWindowBlock : Block(FabricBlockSettings.of(Material.METAL).strength(0.4f)) {
+
+    override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext)
+            : VoxelShape {
+        return VoxelShapes.cuboid(0.0, 0.0, 0.3, 1.0, 1.0, 0.7)
+    }
+
+
+}
+
 class EnderCoreBlock : Block(FabricBlockSettings.of(Material.METAL).strength(0.4f)) {
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext)
             : VoxelShape {
         return VoxelShapes.cuboid(0.1, 0.0, 0.1, 0.9, 0.8, 0.9)
     }
+
 
     override fun randomDisplayTick(state: BlockState, world: World, pos: BlockPos, random: Random) {
         for (i in 0..3) {
@@ -68,11 +79,14 @@ object MinecraftMod : ModInitializer {
     const val MOD_ID = "minecraft_mod"
     val EMPTY_IDENTIFIER = Identifier(MOD_ID, "empty")
 
-    val EXAMPLE_BLOCK = ExampleBlock()
+    val EXAMPLE_BLOCK = EnderWindowBlock()
     val EXAMPLE_BLOCK_ITEM = BlockItem(EXAMPLE_BLOCK, FabricItemSettings().group(ItemGroup.MISC))
 
     val ENDER_CORE = EnderCoreBlock()
     val ENDER_CORE_ITEM = BlockItem(ENDER_CORE, FabricItemSettings().group(ItemGroup.MISC))
+
+    val ENDER_WINDOW = ExampleBlock()
+    val ENDER_WINDOW_ITEM = BlockItem(ENDER_WINDOW, FabricItemSettings().group(ItemGroup.MISC))
 
     val EXAMPLE_ENTITY = Registry.register(Registry.ENTITY_TYPE, Identifier(MOD_ID, "example"),
         FabricEntityTypeBuilder.create(
@@ -87,6 +101,8 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "example_block"), EXAMPLE_BLOCK_ITEM)
         Registry.register(Registry.BLOCK, Identifier(MOD_ID, "ender_core"), ENDER_CORE)
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "ender_core"), ENDER_CORE_ITEM)
+        Registry.register(Registry.BLOCK, Identifier(MOD_ID, "ender_window"), ENDER_WINDOW)
+        Registry.register(Registry.ITEM, Identifier(MOD_ID, "ender_window"), ENDER_WINDOW_ITEM)
         registerExampleEntity()
     }
 
