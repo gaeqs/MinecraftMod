@@ -19,19 +19,19 @@
     "main": [
       {
         "adapter": "kotlin",
-        "value": "io.github.gaeqs.minecraftmod.MinecraftMod"
+        "value": "io.github.gaeqs.magicend.MinecraftMod"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
-        "value": "io.github.gaeqs.minecraftmod.MinecraftModClient"
+        "value": "io.github.gaeqs.magicend.MinecraftModClient"
       }
     ],
     "server": [
       {
         "adapter": "kotlin",
-        "value": "io.github.gaeqs.minecraftmod.MinecraftModServer"
+        "value": "io.github.gaeqs.magicend.MinecraftModServer"
       }
     ]
   },
