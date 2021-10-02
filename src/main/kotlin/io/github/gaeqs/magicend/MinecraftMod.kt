@@ -1,7 +1,8 @@
 package io.github.gaeqs.magicend
 
-import io.github.gaeqs.magicend.block.EndWindowBlock
-import io.github.gaeqs.magicend.block.EnderCoreBlock
+import io.github.gaeqs.magicend.block.*
+/*import io.github.gaeqs.magicend.block.EndWindowBlock
+import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import io.github.gaeqs.magicend.entity.ExampleEntity
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
@@ -28,6 +29,12 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, EnderCoreBlock.IDENTIFIER, EnderCoreBlock.BLOCK_ITEM)
         Registry.register(Registry.BLOCK, EndWindowBlock.IDENTIFIER, EndWindowBlock.BLOCK)
         Registry.register(Registry.ITEM, EndWindowBlock.IDENTIFIER, EndWindowBlock.BLOCK_ITEM)
+        Registry.register(Registry.BLOCK, EndFenceBlock.IDENTIFIER, EndFenceBlock.BLOCK)
+        Registry.register(Registry.ITEM, EndFenceBlock.IDENTIFIER, EndFenceBlock.BLOCK_ITEM)
+        Registry.register(Registry.BLOCK, EndFenceTopBlock.IDENTIFIER, EndFenceTopBlock.BLOCK)
+        Registry.register(Registry.ITEM, EndFenceTopBlock.IDENTIFIER, EndFenceTopBlock.BLOCK_ITEM)
+        Registry.register(Registry.BLOCK, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK)
+        Registry.register(Registry.ITEM, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK_ITEM)
         registerExampleEntity()
     }
 
