@@ -1,6 +1,18 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "magic_end:block/dragon_statue",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "magic_end:block/dragon_statue",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "magic_end:block/dragon_statue",
+      "y": 270
+    },
+    "facing=west": {
       "model": "magic_end:block/dragon_statue"
     }
   }

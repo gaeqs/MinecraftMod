@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magic_end:block/end_fence_corner",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "magic_end:block/end_fence_corner",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "magic_end:block/end_fence_corner",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "magic_end:block/end_fence_corner"
+    }
+  }
+}
