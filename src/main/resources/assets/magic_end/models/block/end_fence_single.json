@@ -1,9 +1,9 @@
 {
 	"__comment": "Designed by Ihton with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "obsidian",
-		"texture": "purpur_pillar_short",
-		"obsidian": "obsidian"
+		"particle": "minecraft:block/obsidian",
+		"texture": "magic_end:block/purpur_pillar_short",
+		"obsidian": "minecraft:block/obsidian"
 	},
 	"elements": [ 	 
 		{

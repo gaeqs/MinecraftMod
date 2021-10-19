@@ -1,19 +1,52 @@
 {
-  "variants": {
-    "facing=north": {
-      "model": "magic_end:block/end_fence",
-      "y": 90
+  "multipart": [
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "magic_end:block/end_fence_single",
+        "uvlock": true
+      }
     },
-    "facing=east": {
-      "model": "magic_end:block/end_fence",
-      "y": 180
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "magic_end:block/end_fence_half",
+        "uvlock": true
+      }
     },
-    "facing=south": {
-      "model": "magic_end:block/end_fence",
-      "y": 270
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "magic_end:block/end_fence_half",
+        "y": 90,
+        "uvlock": true
+      }
     },
-    "facing=west": {
-      "model": "magic_end:block/end_fence"
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "magic_end:block/end_fence_half",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "magic_end:block/end_fence_half",
+        "y": 270,
+        "uvlock": true
+      }
     }
-  }
+  ]
 }
