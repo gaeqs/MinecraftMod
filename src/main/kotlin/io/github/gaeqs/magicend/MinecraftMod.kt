@@ -4,6 +4,7 @@ import io.github.gaeqs.magicend.block.*
 /*import io.github.gaeqs.magicend.block.EndWindowBlock
 import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import io.github.gaeqs.magicend.entity.ExampleEntity
+import io.github.gaeqs.magicend.entity.ShamanEnderman
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -40,12 +41,17 @@ object MinecraftMod : ModInitializer {
 
         Registry.register(Registry.BLOCK, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK)
         Registry.register(Registry.ITEM, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK_ITEM)
-        registerExampleEntity()
+        registerEntities()
     }
 
 
-    private fun registerExampleEntity() {
-
+    private fun registerEntities() {
         FabricDefaultAttributeRegistry.register(EXAMPLE_ENTITY, ExampleEntity.createExampleEntityAttributes())
+
+        Registry.register(Registry.ENTITY_TYPE, ShamanEnderman.IDENTIFIER, ShamanEnderman.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            ShamanEnderman.ENTITY_TYPE,
+            ShamanEnderman.createExampleEntityAttributes()
+        )
     }
 }

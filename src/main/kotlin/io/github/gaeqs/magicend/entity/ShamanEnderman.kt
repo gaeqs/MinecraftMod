@@ -1,8 +1,11 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
+import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.ai.goal.EscapeDangerGoal
 import net.minecraft.entity.ai.goal.WanderAroundGoal
 import net.minecraft.entity.attribute.DefaultAttributeContainer
@@ -14,12 +17,18 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
-class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World)
+class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World)
     : PathAwareEntity(type, world), TopTextured {
 
     companion object {
+        val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "shaman_enderman")
+        val ENTITY_TYPE = FabricEntityTypeBuilder.create(
+            SpawnGroup.CREATURE,
+            EntityType.EntityFactory<ShamanEnderman> { type, world -> ShamanEnderman(type, world) }
+        ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+
         private val TRACKED_TOP_MESSAGE =
-            DataTracker.registerData(ExampleEntity::class.java, TrackedDataHandlerRegistry.STRING)
+            DataTracker.registerData(ShamanEnderman::class.java, TrackedDataHandlerRegistry.STRING)
         private val MESSAGE_1 = Identifier(MinecraftMod.MOD_ID, "textures/entity/example/example_message.png")
         private val MESSAGE_2 = Identifier(MinecraftMod.MOD_ID, "textures/entity/example/example_message_2.png")
 
@@ -37,7 +46,7 @@ class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World)
             dataTracker.set(TRACKED_TOP_MESSAGE, value?.toString() ?: "")
         }
 
-    override var displayOffset = Vec3d(0.0, 0.0, 0.0)
+    override var displayOffset = Vec3d(0.0, -2.5, 0.0)
 
     override fun initDataTracker() {
         super.initDataTracker()
@@ -46,7 +55,7 @@ class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World)
 
     override fun initGoals() {
         goalSelector.add(0, EscapeDangerGoal(this, 2.0))
-        goalSelector.add(1, WanderAroundGoal(this, 1.5, 10))
+        goalSelector.add(1, WanderAroundGoal(this, 1.0, 100))
     }
 
     override fun setAttacker(attacker: LivingEntity?) {
@@ -54,6 +63,10 @@ class ExampleEntity(type: EntityType<out PathAwareEntity>, world: World)
         topTexture = if (attacker == null) MESSAGE_1 else MESSAGE_2
     }
 
+    override fun tick() {
+        super.tick()
+        println(brain)
+    }
 
 
 }
