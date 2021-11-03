@@ -49,5 +49,5 @@ inline fun TreeNodeParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) =
 }
 
 inline fun or(builder: TreeNodeOr.Builder.() -> Unit): TreeNodeOr.Builder {
-    return TreeNodeOr.Builder().also { builder(it) }
+    return TreeNodeOr.Builder().also(builder)
 }

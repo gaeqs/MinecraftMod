@@ -9,7 +9,6 @@ abstract class Activity(val name: String, val ai: EntityAI) {
 
     abstract fun reset()
 
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -24,11 +24,11 @@ class TreeNodeFindWalkTarget(
         if (entity !is PathAwareEntity) return InvocationResult.FAIL
         val target = TargetFinder.findGroundTarget(entity, horizontalRadius, verticalRadius)
         if (target != null) {
-            activity.ai.remember(MemoryTypes.WALK_TARGET, WalkTarget(target, speed, 0))
+            ai.remember(MemoryTypes.WALK_TARGET, WalkTarget(target, speed, 0))
             return InvocationResult.SUCCESS
         }
 
-        activity.ai.forget(MemoryTypes.WALK_TARGET)
+        ai.forget(MemoryTypes.WALK_TARGET)
         return InvocationResult.FAIL
     }
 

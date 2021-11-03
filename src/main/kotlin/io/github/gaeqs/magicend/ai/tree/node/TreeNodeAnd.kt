@@ -49,4 +49,4 @@ inline fun TreeNodeParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() -> Unit)
 }
 
 inline fun and(builder: TreeNodeAnd.Builder.() -> Unit): TreeNodeAnd.Builder =
-    TreeNodeAnd.Builder().also { builder(it) }
+    TreeNodeAnd.Builder().also(builder)

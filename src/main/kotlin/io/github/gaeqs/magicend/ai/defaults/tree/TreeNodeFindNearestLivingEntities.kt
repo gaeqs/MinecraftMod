@@ -22,8 +22,6 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
     }
 
     override fun tick(): InvocationResult {
-        val ai = activity.ai
-        val entity = ai.entity
         val box = entity.boundingBox.expand(16.0, 16.0, 16.0)
         val list = entity.world.getEntitiesByClass(LivingEntity::class.java, box) {
             it != entity && it.isAlive
@@ -39,7 +37,6 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
     }
 
     private fun isEntityTargeteable(target: LivingEntity): Boolean {
-        val ai = activity.ai
         return if (ai.hasMemory(MemoryTypes.ATTACK_TARGET)) {
             TARGET_CONDITIONS_IGNORE_INVISIBILITY_TESTING.test(ai.entity, target)
         } else {

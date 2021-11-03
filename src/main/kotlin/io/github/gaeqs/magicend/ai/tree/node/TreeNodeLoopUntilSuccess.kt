@@ -39,5 +39,5 @@ inline fun TreeNodeParentBuilder<*>.loopUntilSuccess(builder: TreeNodeLoopUntilS
     }
 
 inline fun loopUntilSucceed(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit): TreeNodeLoopUntilSuccess.Builder {
-    return TreeNodeLoopUntilSuccess.Builder().also { builder(it) }
+    return TreeNodeLoopUntilSuccess.Builder().also(builder)
 }

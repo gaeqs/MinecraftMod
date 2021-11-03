@@ -40,5 +40,5 @@ inline fun TreeNodeParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoopN.Bui
     }
 
 inline fun loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit): TreeNodeLoopN.Builder {
-    return TreeNodeLoopN.Builder(times).also { builder(it) }
+    return TreeNodeLoopN.Builder(times).also(builder)
 }

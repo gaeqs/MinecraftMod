@@ -23,10 +23,10 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         lookTargetPos = null
         initFailed = true
 
-        val entity = activity.ai.entity
+        val entity = entity
         if (entity !is PathAwareEntity) return
 
-        val walkTarget = activity.ai.getMemory(MemoryTypes.WALK_TARGET)
+        val walkTarget = ai.getMemory(MemoryTypes.WALK_TARGET)
         if (walkTarget == null || hasReached(walkTarget)) return
         if (!hasFinishedPath(walkTarget)) return
 
@@ -37,7 +37,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     override fun tick(): InvocationResult {
         if (initFailed) return InvocationResult.FAIL
 
-        val entity = activity.ai.entity as PathAwareEntity
+        val entity = entity as PathAwareEntity
         path = entity.navigation.currentPath
         val walkTarget = activity.ai.getMemory(MemoryTypes.WALK_TARGET)
         if (!shouldKeepRunning(walkTarget)) {
@@ -53,12 +53,12 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     }
 
     override fun stop() {
-        val entity = activity.ai.entity as PathAwareEntity
+        val entity = entity as PathAwareEntity
         entity.navigation.stop()
     }
 
     private fun shouldKeepRunning(walkTarget: WalkTarget?): Boolean {
-        val entity = activity.ai.entity as PathAwareEntity
+        val entity = entity as PathAwareEntity
         if (path == null || lookTargetPos == null) return false
         return !entity.navigation.isIdle && walkTarget != null && !hasReached(walkTarget)
     }

@@ -34,5 +34,5 @@ inline fun TreeNodeParentBuilder<*>.loopUnconditional(builder: TreeNodeLoopUncon
     }
 
 inline fun loopUnconditional(builder: TreeNodeLoopUnconditional.Builder.() -> Unit): TreeNodeLoopUnconditional.Builder {
-    return TreeNodeLoopUnconditional.Builder().also { builder(it) }
+    return TreeNodeLoopUnconditional.Builder().also(builder)
 }

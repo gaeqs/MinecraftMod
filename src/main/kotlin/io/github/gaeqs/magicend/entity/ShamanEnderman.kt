@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
 import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
+import io.github.gaeqs.magicend.ai.statemachine.StateMachineActivity
+import io.github.gaeqs.magicend.ai.statemachine.builder.stateMachine
+import io.github.gaeqs.magicend.ai.statemachine.node.lambda
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -11,8 +14,6 @@ import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
-import net.minecraft.entity.ai.brain.MemoryModuleType
-import net.minecraft.entity.ai.brain.sensor.SensorType
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.data.DataTracker
@@ -21,6 +22,8 @@ import net.minecraft.entity.mob.PathAwareEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import kotlin.random.Random
+import kotlin.random.nextUInt
 
 class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : PathAwareEntity(type, world), TopTextured {
 
@@ -89,7 +92,7 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
                     start {
                         println("START")
                     }
-                    invoke {
+                    tick {
                         println("INVOKE!")
                         TreeNode.InvocationResult.SUCCESS
                     }
@@ -99,6 +102,25 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
                 }
 
                 wait(100)
+            }
+        })
+
+        ai.activities += StateMachineActivity("idle", ai, stateMachine {
+            lambda("start") {
+                start { topTexture = MESSAGE_1 }
+                tick {
+                    if (Random.Default.nextInt(0, 20) == 0) {
+                        changeState("state2")
+                    }
+                }
+            }
+            lambda("state2") {
+                start { topTexture = MESSAGE_2 }
+                tick {
+                    if (Random.Default.nextInt(0, 20) == 0) {
+                        changeState("start")
+                    }
+                }
             }
         })
 
