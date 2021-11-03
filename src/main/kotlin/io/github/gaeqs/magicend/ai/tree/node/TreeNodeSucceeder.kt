@@ -9,7 +9,7 @@ class TreeNodeSucceeder(activity: Activity, val child: TreeNode) : TreeNode(acti
     override fun reset() = child.reset()
 
     override fun invoke(): InvocationResult {
-        child()
+        if(child() == InvocationResult.WAIT) return InvocationResult.WAIT
         return InvocationResult.SUCCESS
     }
 

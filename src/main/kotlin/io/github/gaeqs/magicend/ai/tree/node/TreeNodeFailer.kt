@@ -9,7 +9,7 @@ class TreeNodeFailer(activity: Activity, val child: TreeNode) : TreeNode(activit
     override fun reset() = child.reset()
 
     override fun invoke(): InvocationResult {
-        child()
+        if(child() == InvocationResult.WAIT) return InvocationResult.WAIT
         return InvocationResult.FAIL
     }
 
