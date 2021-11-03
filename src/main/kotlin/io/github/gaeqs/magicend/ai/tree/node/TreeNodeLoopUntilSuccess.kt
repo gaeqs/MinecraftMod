@@ -1,9 +1,10 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
+import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeLoopUntilSuccess(val child: TreeNode) : TreeNode() {
+class TreeNodeLoopUntilSuccess(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun reset() = child.reset()
 
@@ -18,7 +19,7 @@ class TreeNodeLoopUntilSuccess(val child: TreeNode) : TreeNode() {
     }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeLoopUntilSuccess>() {
-        override fun build() = TreeNodeLoopUntilSuccess(child.build())
+        override fun build(activity: Activity) = TreeNodeLoopUntilSuccess(activity, child.build(activity))
     }
 }
 
@@ -32,4 +33,8 @@ inline fun TreeNodeUniqueParentBuilder<*>.loopUntilSucceed(builder: TreeNodeLoop
     val b = TreeNodeLoopUntilSuccess.Builder()
     child = b
     builder(b)
+}
+
+inline fun loopUntilSucceed(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit): TreeNodeLoopUntilSuccess.Builder {
+    return TreeNodeLoopUntilSuccess.Builder().also { builder(it) }
 }

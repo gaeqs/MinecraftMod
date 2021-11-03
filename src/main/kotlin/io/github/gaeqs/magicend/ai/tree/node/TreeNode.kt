@@ -1,6 +1,8 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
-abstract class TreeNode() {
+import io.github.gaeqs.magicend.ai.Activity
+
+abstract class TreeNode(val activity: Activity) {
 
     abstract fun reset()
 

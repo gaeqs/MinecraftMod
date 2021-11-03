@@ -1,9 +1,10 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
+import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeLoopUnconditional(val child: TreeNode) : TreeNode() {
+class TreeNodeLoopUnconditional(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun reset() = child.reset()
 
@@ -15,7 +16,7 @@ class TreeNodeLoopUnconditional(val child: TreeNode) : TreeNode() {
     }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeLoopUnconditional>() {
-        override fun build() = TreeNodeLoopUnconditional(child.build())
+        override fun build(activity: Activity) = TreeNodeLoopUnconditional(activity, child.build(activity))
     }
 }
 

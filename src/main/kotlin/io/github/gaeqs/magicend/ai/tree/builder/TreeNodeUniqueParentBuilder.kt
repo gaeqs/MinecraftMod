@@ -5,6 +5,6 @@ import io.github.gaeqs.magicend.ai.tree.node.TreeNodeNull
 
 abstract class TreeNodeUniqueParentBuilder<T : TreeNode> : TreeNodeBuilder<T> {
 
-    var child: TreeNodeBuilder<*> = TreeNodeNull.BUILDER
+    var child: TreeNodeBuilder<*> = TreeNodeNull.Builder()
 
 }

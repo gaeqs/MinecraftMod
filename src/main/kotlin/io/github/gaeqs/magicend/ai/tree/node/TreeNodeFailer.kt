@@ -1,9 +1,10 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
+import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeFailer(val child: TreeNode) : TreeNode() {
+class TreeNodeFailer(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun reset() = child.reset()
 
@@ -13,7 +14,7 @@ class TreeNodeFailer(val child: TreeNode) : TreeNode() {
     }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeFailer>() {
-        override fun build() = TreeNodeFailer(child.build())
+        override fun build(activity: Activity) = TreeNodeFailer(activity, child.build(activity))
     }
 }
 

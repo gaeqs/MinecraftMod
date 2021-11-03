@@ -1,9 +1,10 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
+import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeLoopN(val child: TreeNode, val times: Int) : TreeNode() {
+class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : TreeNode(activity) {
 
     private var executed = 0
 
@@ -21,7 +22,7 @@ class TreeNodeLoopN(val child: TreeNode, val times: Int) : TreeNode() {
     }
 
     class Builder(var times: Int) : TreeNodeUniqueParentBuilder<TreeNodeLoopN>() {
-        override fun build() = TreeNodeLoopN(child.build(), times)
+        override fun build(activity: Activity) = TreeNodeLoopN(activity, child.build(activity), times)
     }
 }
 
@@ -35,4 +36,8 @@ inline fun TreeNodeUniqueParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoo
     val b = TreeNodeLoopN.Builder(times)
     child = b
     builder(b)
+}
+
+inline fun loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit): TreeNodeLoopN.Builder {
+    return TreeNodeLoopN.Builder(times).also { builder(it) }
 }

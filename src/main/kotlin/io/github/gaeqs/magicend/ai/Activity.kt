@@ -1,11 +1,25 @@
 package io.github.gaeqs.magicend.ai
 
-interface Activity {
+abstract class Activity(val name: String, val ai: EntityAI) {
 
-    val finished: Boolean
+    abstract val finished: Boolean
 
-    fun tick()
+    abstract fun tick()
 
-    fun reset()
+    abstract fun reset()
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Activity
+        if (name != other.name) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+
 
 }

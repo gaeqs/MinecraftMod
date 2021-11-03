@@ -1,8 +1,9 @@
 package io.github.gaeqs.magicend.ai.statemachine
 
 import io.github.gaeqs.magicend.ai.Activity
+import io.github.gaeqs.magicend.ai.EntityAI
 
-class StateMachineActivity : Activity {
+class StateMachineActivity(name: String, ai: EntityAI) : Activity(name, ai) {
 
     override val finished: Boolean = false
 

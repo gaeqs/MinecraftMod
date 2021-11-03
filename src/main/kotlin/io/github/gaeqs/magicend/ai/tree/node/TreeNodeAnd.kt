@@ -1,9 +1,10 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
+import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeAnd(val children: List<TreeNode>) : TreeNode() {
+class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(activity) {
 
     private var result: InvocationResult? = null
     private var childIndex = 0
@@ -28,7 +29,7 @@ class TreeNodeAnd(val children: List<TreeNode>) : TreeNode() {
     }
 
     class Builder : TreeNodeParentBuilder<TreeNodeAnd>() {
-        override fun build() = TreeNodeAnd(children.map { it.build() })
+        override fun build(activity: Activity) = TreeNodeAnd(activity, children.map { it.build(activity) })
     }
 }
 
@@ -42,4 +43,8 @@ inline fun TreeNodeUniqueParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() ->
     val b = TreeNodeAnd.Builder()
     child = b
     builder(b)
+}
+
+inline fun and(builder: TreeNodeAnd.Builder.() -> Unit): TreeNodeAnd.Builder {
+    return TreeNodeAnd.Builder().also { builder(it) }
 }
