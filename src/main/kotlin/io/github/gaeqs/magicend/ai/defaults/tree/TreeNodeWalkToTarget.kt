@@ -21,6 +21,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     private var lookTargetPos: BlockPos? = null
 
     override fun reset() {
+        status = Status.INITIALIZING
     }
 
     override fun invoke(): InvocationResult {
@@ -47,6 +48,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         }
 
         status = Status.RUNNING
+        entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
         return InvocationResult.WAIT
     }
 

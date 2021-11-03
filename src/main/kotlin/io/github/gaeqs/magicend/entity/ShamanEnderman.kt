@@ -5,6 +5,7 @@ import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
 import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
+import io.github.gaeqs.magicend.ai.tree.node.and
 import io.github.gaeqs.magicend.ai.tree.node.loopUnconditional
 import io.github.gaeqs.magicend.ai.tree.node.wait
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -19,7 +20,6 @@ import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.PathAwareEntity
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
@@ -88,9 +88,11 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
 
     private fun initAI() {
         ai.coreActivity = TreeActivity("core", ai, loopUnconditional {
-            findWalkTarget(1.0f)
-            walkToTarget()
-            wait(100)
+            and {
+                findWalkTarget(1.0f)
+                walkToTarget()
+                wait(100)
+            }
         })
 
     }
