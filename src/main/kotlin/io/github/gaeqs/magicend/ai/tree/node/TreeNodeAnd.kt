@@ -1,8 +1,8 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
 import io.github.gaeqs.magicend.ai.Activity
+import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeMultipleParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(activity) {
 
@@ -38,23 +38,15 @@ class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(a
         }
     }
 
-    class Builder : TreeNodeParentBuilder<TreeNodeAnd>() {
+    class Builder : TreeNodeMultipleParentBuilder<TreeNodeAnd>() {
         override fun build(activity: Activity) = TreeNodeAnd(activity, children.map { it.build(activity) })
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() -> Unit) {
-    val b = TreeNodeAnd.Builder()
-    children.add(b)
-    builder(b)
+inline fun TreeNodeParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() -> Unit) = TreeNodeAnd.Builder().also {
+    addChild(it)
+    builder(it)
 }
 
-inline fun TreeNodeUniqueParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() -> Unit) {
-    val b = TreeNodeAnd.Builder()
-    child = b
-    builder(b)
-}
-
-inline fun and(builder: TreeNodeAnd.Builder.() -> Unit): TreeNodeAnd.Builder {
-    return TreeNodeAnd.Builder().also { builder(it) }
-}
+inline fun and(builder: TreeNodeAnd.Builder.() -> Unit): TreeNodeAnd.Builder =
+    TreeNodeAnd.Builder().also { builder(it) }

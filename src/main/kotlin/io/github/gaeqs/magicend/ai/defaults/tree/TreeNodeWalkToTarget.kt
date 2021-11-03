@@ -4,7 +4,6 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import net.minecraft.entity.ai.TargetFinder
 import net.minecraft.entity.ai.brain.WalkTarget
@@ -94,10 +93,4 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     }
 }
 
-fun TreeNodeParentBuilder<*>.walkToTarget() {
-    children.add(TreeNodeWalkToTarget.Builder())
-}
-
-fun TreeNodeUniqueParentBuilder<*>.walkToTarget() {
-    child = TreeNodeWalkToTarget.Builder()
-}
+fun TreeNodeParentBuilder<*>.walkToTarget() = addChild(TreeNodeWalkToTarget.Builder())

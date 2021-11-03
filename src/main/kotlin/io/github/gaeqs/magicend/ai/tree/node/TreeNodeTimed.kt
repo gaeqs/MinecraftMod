@@ -46,14 +46,8 @@ class TreeNodeTimed(activity: Activity, val minTicks: Int, val maxTicks: Int, va
     }
 }
 
-fun TreeNodeParentBuilder<*>.timed(minTicks: Int, maxTicks: Int, builder: TreeNodeTimed.Builder.() -> Unit) {
-    val b = TreeNodeTimed.Builder(minTicks, maxTicks)
-    children.add(b)
-    builder(b)
-}
-
-fun TreeNodeUniqueParentBuilder<*>.timed(minTicks: Int, maxTicks: Int, builder: TreeNodeTimed.Builder.() -> Unit) {
-    val b = TreeNodeTimed.Builder(minTicks, maxTicks)
-    child = b
-    builder(b)
-}
+fun TreeNodeParentBuilder<*>.timed(minTicks: Int, maxTicks: Int, builder: TreeNodeTimed.Builder.() -> Unit) =
+    TreeNodeTimed.Builder(minTicks, maxTicks).also {
+        addChild(it)
+        builder(it)
+    }

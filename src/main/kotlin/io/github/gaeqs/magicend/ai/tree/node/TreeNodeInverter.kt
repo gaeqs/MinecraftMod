@@ -21,14 +21,8 @@ class TreeNodeInverter(activity: Activity, val child: TreeNode) : TreeNode(activ
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.inverter(builder: TreeNodeInverter.Builder.() -> Unit) {
-    val b = TreeNodeInverter.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.inverter(builder: TreeNodeInverter.Builder.() -> Unit) {
-    val b = TreeNodeInverter.Builder()
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.inverter(builder: TreeNodeInverter.Builder.() -> Unit) =
+    TreeNodeInverter.Builder().also {
+        addChild(it)
+        builder(it)
+    }

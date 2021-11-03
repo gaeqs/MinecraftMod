@@ -3,7 +3,6 @@ package io.github.gaeqs.magicend.ai.tree.node
 import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationResult = InvocationResult.SUCCESS) :
     TreeNode(activity) {
@@ -30,12 +29,4 @@ class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationR
     }
 }
 
-fun TreeNodeParentBuilder<*>.wait(times: Int) {
-    val b = TreeNodeWaiter.Builder(times)
-    children.add(b)
-}
-
-fun TreeNodeUniqueParentBuilder<*>.wait(times: Int) {
-    val b = TreeNodeWaiter.Builder(times)
-    child = b
-}
+fun TreeNodeParentBuilder<*>.wait(times: Int) = addChild(TreeNodeWaiter.Builder(times))

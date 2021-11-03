@@ -94,6 +94,20 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
                         walkToTarget()
                     }
                 }
+
+                lambda {
+                    start {
+                        println("START")
+                    }
+                    invoke {
+                        println("INVOKE!")
+                        TreeNode.InvocationResult.SUCCESS
+                    }
+                    stop {
+                        println("STOP")
+                    }
+                }
+
                 wait(100)
             }
         })

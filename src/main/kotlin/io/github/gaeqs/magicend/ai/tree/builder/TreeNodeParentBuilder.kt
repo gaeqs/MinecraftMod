@@ -2,8 +2,10 @@ package io.github.gaeqs.magicend.ai.tree.builder
 
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 
-abstract class TreeNodeParentBuilder<T : TreeNode> : TreeNodeBuilder<T> {
+interface TreeNodeParentBuilder<T : TreeNode> : TreeNodeBuilder<T> {
 
-    val children = mutableListOf<TreeNodeBuilder<*>>()
+    val children: List<TreeNodeBuilder<*>>
+
+    fun addChild(node: TreeNodeBuilder<*>)
 
 }

@@ -4,7 +4,6 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.TargetPredicate
@@ -54,10 +53,4 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
     }
 }
 
-fun TreeNodeParentBuilder<*>.findNearestLivingEntities() {
-    children.add(TreeNodeFindNearestLivingEntities.Builder())
-}
-
-fun TreeNodeUniqueParentBuilder<*>.findNearestLivingEntities() {
-    child = TreeNodeFindNearestLivingEntities.Builder()
-}
+fun TreeNodeParentBuilder<*>.findNearestLivingEntities() = addChild(TreeNodeFindNearestLivingEntities.Builder())

@@ -33,17 +33,11 @@ class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : T
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit) {
-    val b = TreeNodeLoopN.Builder(times)
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit) {
-    val b = TreeNodeLoopN.Builder(times)
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit) =
+    TreeNodeLoopN.Builder(times).also {
+        addChild(it)
+        builder(it)
+    }
 
 inline fun loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit): TreeNodeLoopN.Builder {
     return TreeNodeLoopN.Builder(times).also { builder(it) }

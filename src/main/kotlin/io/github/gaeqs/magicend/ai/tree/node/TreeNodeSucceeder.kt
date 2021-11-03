@@ -7,7 +7,7 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 class TreeNodeSucceeder(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun invoke(): InvocationResult {
-        if(child() == InvocationResult.WAIT) return InvocationResult.WAIT
+        if (child() == InvocationResult.WAIT) return InvocationResult.WAIT
         return InvocationResult.SUCCESS
     }
 
@@ -24,14 +24,8 @@ class TreeNodeSucceeder(activity: Activity, val child: TreeNode) : TreeNode(acti
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.succeeder(builder: TreeNodeSucceeder.Builder.() -> Unit) {
-    val b = TreeNodeSucceeder.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.succeeder(builder: TreeNodeSucceeder.Builder.() -> Unit) {
-    val b = TreeNodeSucceeder.Builder()
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.succeeder(builder: TreeNodeSucceeder.Builder.() -> Unit) =
+    TreeNodeSucceeder.Builder().also {
+        addChild(it)
+        builder(it)
+    }

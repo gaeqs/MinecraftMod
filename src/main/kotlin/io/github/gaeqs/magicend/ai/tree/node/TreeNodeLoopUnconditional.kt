@@ -27,17 +27,11 @@ class TreeNodeLoopUnconditional(activity: Activity, val child: TreeNode) : TreeN
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.loopUnconditional(builder: TreeNodeLoopUnconditional.Builder.() -> Unit) {
-    val b = TreeNodeLoopUnconditional.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.loopUnconditional(builder: TreeNodeLoopUnconditional.Builder.() -> Unit) {
-    val b = TreeNodeLoopUnconditional.Builder()
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.loopUnconditional(builder: TreeNodeLoopUnconditional.Builder.() -> Unit) =
+    TreeNodeLoopUnconditional.Builder().also {
+        addChild(it)
+        builder(it)
+    }
 
 inline fun loopUnconditional(builder: TreeNodeLoopUnconditional.Builder.() -> Unit): TreeNodeLoopUnconditional.Builder {
     return TreeNodeLoopUnconditional.Builder().also { builder(it) }

@@ -32,17 +32,11 @@ class TreeNodeLoopUntilFail(activity: Activity, val child: TreeNode) : TreeNode(
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.loopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit) {
-    val b = TreeNodeLoopUntilFail.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.loopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit) {
-    val b = TreeNodeLoopUntilFail.Builder()
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.loopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit) =
+    TreeNodeLoopUntilFail.Builder().also {
+        addChild(it)
+        builder(it)
+    }
 
 inline fun loopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit): TreeNodeLoopUntilFail.Builder {
     return TreeNodeLoopUntilFail.Builder().also { builder(it) }

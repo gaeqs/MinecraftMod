@@ -1,8 +1,8 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
 import io.github.gaeqs.magicend.ai.Activity
+import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeMultipleParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeOr(activity: Activity, val children: List<TreeNode>) : TreeNode(activity) {
 
@@ -38,21 +38,14 @@ class TreeNodeOr(activity: Activity, val children: List<TreeNode>) : TreeNode(ac
         }
     }
 
-    class Builder : TreeNodeParentBuilder<TreeNodeOr>() {
+    class Builder : TreeNodeMultipleParentBuilder<TreeNodeOr>() {
         override fun build(activity: Activity) = TreeNodeOr(activity, children.map { it.build(activity) })
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) {
-    val b = TreeNodeOr.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) {
-    val b = TreeNodeOr.Builder()
-    child = b
-    builder(b)
+inline fun TreeNodeParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) = TreeNodeOr.Builder().also {
+    addChild(it)
+    builder(it)
 }
 
 inline fun or(builder: TreeNodeOr.Builder.() -> Unit): TreeNodeOr.Builder {

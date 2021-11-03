@@ -32,17 +32,11 @@ class TreeNodeLoopUntilSuccess(activity: Activity, val child: TreeNode) : TreeNo
     }
 }
 
-inline fun TreeNodeParentBuilder<*>.loopUntilSucceed(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit) {
-    val b = TreeNodeLoopUntilSuccess.Builder()
-    children.add(b)
-    builder(b)
-}
-
-inline fun TreeNodeUniqueParentBuilder<*>.loopUntilSucceed(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit) {
-    val b = TreeNodeLoopUntilSuccess.Builder()
-    child = b
-    builder(b)
-}
+inline fun TreeNodeParentBuilder<*>.loopUntilSuccess(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit) =
+    TreeNodeLoopUntilSuccess.Builder().also {
+        addChild(it)
+        builder(it)
+    }
 
 inline fun loopUntilSucceed(builder: TreeNodeLoopUntilSuccess.Builder.() -> Unit): TreeNodeLoopUntilSuccess.Builder {
     return TreeNodeLoopUntilSuccess.Builder().also { builder(it) }

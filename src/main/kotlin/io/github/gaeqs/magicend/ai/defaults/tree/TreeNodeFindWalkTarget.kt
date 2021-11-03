@@ -4,7 +4,6 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import net.minecraft.entity.ai.TargetFinder
 import net.minecraft.entity.ai.brain.WalkTarget
@@ -47,10 +46,5 @@ class TreeNodeFindWalkTarget(
     }
 }
 
-fun TreeNodeParentBuilder<*>.findWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) {
-    children.add(TreeNodeFindWalkTarget.Builder(speed, horizontalRadius, verticalRadius))
-}
-
-fun TreeNodeUniqueParentBuilder<*>.findWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) {
-    child = TreeNodeFindWalkTarget.Builder(speed, horizontalRadius, verticalRadius)
-}
+fun TreeNodeParentBuilder<*>.findWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) =
+    addChild(TreeNodeFindWalkTarget.Builder(speed, horizontalRadius, verticalRadius))
