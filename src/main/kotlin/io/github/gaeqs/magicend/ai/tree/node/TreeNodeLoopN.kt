@@ -8,9 +8,9 @@ class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : T
 
     private var executed = 0
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         while (executed < times) {
-            if (child() == InvocationResult.WAIT) return InvocationResult.WAIT
+            if (child.tick() == InvocationResult.WAIT) return InvocationResult.WAIT
             executed++
             if (executed < times) {
                 child.stop()

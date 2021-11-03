@@ -9,12 +9,12 @@ class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(a
     private var result: InvocationResult? = null
     private var childIndex = 0
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         result?.let { return it }
 
         var childResult: InvocationResult = InvocationResult.SUCCESS
         while (childResult != InvocationResult.FAIL && childIndex < children.size) {
-            childResult = children[childIndex]()
+            childResult = children[childIndex].tick()
             if (childResult == InvocationResult.WAIT) return InvocationResult.WAIT
 
             children[childIndex++].stop()

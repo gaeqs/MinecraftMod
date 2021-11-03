@@ -34,7 +34,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
     }
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         if (initFailed) return InvocationResult.FAIL
 
         val entity = activity.ai.entity as PathAwareEntity

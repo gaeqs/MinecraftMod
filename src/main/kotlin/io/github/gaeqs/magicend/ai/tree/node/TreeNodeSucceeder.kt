@@ -6,8 +6,8 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeSucceeder(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun invoke(): InvocationResult {
-        if (child() == InvocationResult.WAIT) return InvocationResult.WAIT
+    override fun tick(): InvocationResult {
+        if (child.tick() == InvocationResult.WAIT) return InvocationResult.WAIT
         return InvocationResult.SUCCESS
     }
 

@@ -19,7 +19,7 @@ class TreeNodeFindWalkTarget(
     override fun start() {
     }
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         val entity = activity.ai.entity
         if (entity !is PathAwareEntity) return InvocationResult.FAIL
         val target = TargetFinder.findGroundTarget(entity, horizontalRadius, verticalRadius)

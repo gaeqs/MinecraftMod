@@ -23,11 +23,11 @@ class TreeNodeTimed(activity: Activity, val minTicks: Int, val maxTicks: Int, va
         child.stop()
     }
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         result?.let { return it }
         if (current < times) {
 
-            val childResult = child()
+            val childResult = child.tick()
             if (childResult != InvocationResult.WAIT) {
                 result = childResult
                 return childResult

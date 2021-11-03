@@ -9,7 +9,7 @@ class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationR
 
     private var current = 0
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         if (current < ticks) {
             current++
             return InvocationResult.WAIT

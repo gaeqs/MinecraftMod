@@ -31,16 +31,6 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
             EntityType.EntityFactory<ShamanEnderman> { type, world -> ShamanEnderman(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
 
-        private val SENSOR_TYPES = listOf(SensorType.NEAREST_LIVING_ENTITIES)
-        private val MEMORY_MODULE_TYPES = listOf(
-            MemoryModuleType.MOBS,
-            MemoryModuleType.VISIBLE_MOBS,
-            MemoryModuleType.LOOK_TARGET,
-            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH,
-            MemoryModuleType.WALK_TARGET
-        )
-
         private val TRACKED_TOP_MESSAGE =
             DataTracker.registerData(ShamanEnderman::class.java, TrackedDataHandlerRegistry.STRING)
         private val MESSAGE_1 = Identifier(MinecraftMod.MOD_ID, "textures/entity/example/example_message.png")

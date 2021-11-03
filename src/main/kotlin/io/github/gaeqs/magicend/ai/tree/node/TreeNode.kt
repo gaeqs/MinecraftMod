@@ -6,7 +6,7 @@ abstract class TreeNode(val activity: Activity) {
 
     abstract fun start()
 
-    abstract operator fun invoke(): InvocationResult
+    abstract fun tick(): InvocationResult
 
     abstract fun stop()
 

@@ -21,7 +21,7 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
     override fun start() {
     }
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         val ai = activity.ai
         val entity = ai.entity
         val box = entity.boundingBox.expand(16.0, 16.0, 16.0)

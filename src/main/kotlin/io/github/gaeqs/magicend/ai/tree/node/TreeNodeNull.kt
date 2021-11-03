@@ -6,7 +6,7 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 
 class TreeNodeNull(activity: Activity) : TreeNode(activity) {
 
-    override fun invoke(): InvocationResult {
+    override fun tick(): InvocationResult {
         return InvocationResult.FAIL
     }
 

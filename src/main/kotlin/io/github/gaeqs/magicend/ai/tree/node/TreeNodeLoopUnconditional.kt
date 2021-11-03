@@ -6,8 +6,8 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeLoopUnconditional(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun invoke(): InvocationResult {
-        while (child() != InvocationResult.WAIT) {
+    override fun tick(): InvocationResult {
+        while (child.tick() != InvocationResult.WAIT) {
             child.stop()
             child.start()
         }

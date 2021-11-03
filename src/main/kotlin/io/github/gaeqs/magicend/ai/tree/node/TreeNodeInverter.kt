@@ -6,7 +6,7 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeInverter(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun invoke() = child().not()
+    override fun tick() = child.tick().not()
 
     override fun start() {
         child.start()

@@ -11,7 +11,7 @@ class TreeNodeLambda(
     val stop: TreeNode.() -> Unit,
 ) : TreeNode(activity) {
 
-    override fun invoke() = invoke(this)
+    override fun tick() = invoke(this)
     override fun start() = start(this)
     override fun stop() = stop(this)
 

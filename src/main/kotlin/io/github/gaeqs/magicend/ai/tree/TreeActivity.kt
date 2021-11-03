@@ -20,7 +20,7 @@ class TreeActivity(name: String, ai: EntityAI, rootProvider: TreeNodeBuilder<*>)
             started = true
         }
 
-        if (root() != TreeNode.InvocationResult.WAIT) {
+        if (root.tick() != TreeNode.InvocationResult.WAIT) {
             root.stop()
             finished = true
         }
