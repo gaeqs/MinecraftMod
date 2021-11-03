@@ -6,8 +6,15 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeInverter(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun reset() = child.reset()
     override fun invoke() = child().not()
+
+    override fun start() {
+        child.start()
+    }
+
+    override fun stop() {
+        child.stop()
+    }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeInverter>() {
         override fun build(activity: Activity) = TreeNodeInverter(activity, child.build(activity))

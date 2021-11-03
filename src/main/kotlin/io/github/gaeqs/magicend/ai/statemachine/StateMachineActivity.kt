@@ -5,6 +5,7 @@ import io.github.gaeqs.magicend.ai.EntityAI
 
 class StateMachineActivity(name: String, ai: EntityAI) : Activity(name, ai) {
 
+    override val started: Boolean = false
     override val finished: Boolean = false
 
     override fun tick() {

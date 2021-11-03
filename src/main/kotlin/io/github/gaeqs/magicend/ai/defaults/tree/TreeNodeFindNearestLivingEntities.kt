@@ -19,7 +19,7 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
                 .ignoreEntityTargetRules().ignoreDistanceScalingFactor()
     }
 
-    override fun reset() {
+    override fun start() {
     }
 
     override fun invoke(): InvocationResult {
@@ -36,6 +36,9 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
         return InvocationResult.SUCCESS
     }
 
+    override fun stop() {
+    }
+
     private fun isEntityTargeteable(target: LivingEntity): Boolean {
         val ai = activity.ai
         return if (ai.hasMemory(MemoryTypes.ATTACK_TARGET)) {
@@ -44,6 +47,7 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
             TARGET_CONDITIONS.test(ai.entity, target)
         }
     }
+
 
     class Builder : TreeNodeBuilder<TreeNodeFindNearestLivingEntities> {
         override fun build(activity: Activity) = TreeNodeFindNearestLivingEntities(activity)

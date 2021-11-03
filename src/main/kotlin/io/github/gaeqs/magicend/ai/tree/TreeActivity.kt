@@ -9,18 +9,30 @@ class TreeActivity(name: String, ai: EntityAI, rootProvider: TreeNodeBuilder<*>)
 
     val root: TreeNode = rootProvider.build(this)
 
+    override var started = false
+        private set
     override var finished = false
         private set
 
     override fun tick() {
+        if (!started) {
+            root.start()
+            started = true
+        }
+
         if (root() != TreeNode.InvocationResult.WAIT) {
+            root.stop()
             finished = true
         }
     }
 
     override fun reset() {
+        if(started && !finished) {
+            root.stop()
+        }
+
+        started = false
         finished = false
-        root.reset()
     }
 
 }

@@ -4,9 +4,11 @@ import io.github.gaeqs.magicend.ai.Activity
 
 abstract class TreeNode(val activity: Activity) {
 
-    abstract fun reset()
+    abstract fun start()
 
     abstract operator fun invoke(): InvocationResult
+
+    abstract fun stop()
 
     enum class InvocationResult {
         SUCCESS, FAIL, WAIT;

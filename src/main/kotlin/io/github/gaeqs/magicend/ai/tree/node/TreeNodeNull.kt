@@ -7,11 +7,14 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeNull(activity: Activity) : TreeNode(activity) {
 
-    override fun reset() {
-    }
-
     override fun invoke(): InvocationResult {
         return InvocationResult.FAIL
+    }
+
+    override fun start() {
+    }
+
+    override fun stop() {
     }
 
     class Builder : TreeNodeBuilder<TreeNodeNull> {

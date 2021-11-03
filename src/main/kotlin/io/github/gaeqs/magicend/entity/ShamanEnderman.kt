@@ -3,7 +3,6 @@ package io.github.gaeqs.magicend.entity
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
-import io.github.gaeqs.magicend.ai.defaults.tree.stopWalking
 import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
@@ -95,8 +94,6 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
                         walkToTarget()
                     }
                 }
-
-                stopWalking()
                 wait(100)
             }
         })

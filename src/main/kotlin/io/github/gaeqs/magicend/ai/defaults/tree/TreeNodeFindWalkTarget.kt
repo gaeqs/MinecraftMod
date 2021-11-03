@@ -17,7 +17,7 @@ class TreeNodeFindWalkTarget(
     val verticalRadius: Int
 ) : TreeNode(activity) {
 
-    override fun reset() {
+    override fun start() {
     }
 
     override fun invoke(): InvocationResult {
@@ -40,6 +40,10 @@ class TreeNodeFindWalkTarget(
     ) : TreeNodeBuilder<TreeNodeFindWalkTarget> {
         override fun build(activity: Activity) =
             TreeNodeFindWalkTarget(activity, speed, horizontalRadius, verticalRadius)
+    }
+
+    override fun stop() {
+
     }
 }
 

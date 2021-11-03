@@ -10,16 +10,19 @@ class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationR
 
     private var current = 0
 
-    override fun reset() {
-        current = 0
-    }
-
     override fun invoke(): InvocationResult {
         if (current < ticks) {
             current++
             return InvocationResult.WAIT
         }
         return result
+    }
+
+    override fun start() {
+        current = 0
+    }
+
+    override fun stop() {
     }
 
     class Builder(var ticks: Int) : TreeNodeBuilder<TreeNodeWaiter> {

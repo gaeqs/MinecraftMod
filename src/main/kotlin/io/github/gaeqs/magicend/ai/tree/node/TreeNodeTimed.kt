@@ -12,11 +12,15 @@ class TreeNodeTimed(activity: Activity, val minTicks: Int, val maxTicks: Int, va
     private var times: Int = Random.Default.nextInt(minTicks, maxTicks)
     private var result: InvocationResult? = null
 
-    override fun reset() {
+    override fun start() {
         current = 0
         times = Random.Default.nextInt(minTicks, maxTicks)
         result = null
-        child.reset()
+        child.start()
+    }
+
+    override fun stop() {
+        child.stop()
     }
 
     override fun invoke(): InvocationResult {

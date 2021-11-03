@@ -6,16 +6,25 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeLoopUntilSuccess(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun reset() = child.reset()
-
     override fun invoke(): InvocationResult {
         while (true) {
             when (child()) {
                 InvocationResult.WAIT -> return InvocationResult.WAIT
                 InvocationResult.SUCCESS -> return InvocationResult.SUCCESS
-                else -> child.reset()
+                else -> {
+                    child.stop()
+                    child.start()
+                }
             }
         }
+    }
+
+    override fun start() {
+        child.start()
+    }
+
+    override fun stop() {
+        child.stop()
     }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeLoopUntilSuccess>() {

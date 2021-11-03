@@ -6,11 +6,17 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
 class TreeNodeFailer(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
-    override fun reset() = child.reset()
-
     override fun invoke(): InvocationResult {
         if(child() == InvocationResult.WAIT) return InvocationResult.WAIT
         return InvocationResult.FAIL
+    }
+
+    override fun start() {
+        child.start()
+    }
+
+    override fun stop() {
+        child.stop()
     }
 
     class Builder : TreeNodeUniqueParentBuilder<TreeNodeFailer>() {

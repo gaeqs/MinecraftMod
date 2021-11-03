@@ -8,17 +8,24 @@ class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : T
 
     private var executed = 0
 
-    override fun reset() = child.reset()
-
     override fun invoke(): InvocationResult {
         while (executed < times) {
             if (child() == InvocationResult.WAIT) return InvocationResult.WAIT
             executed++
             if (executed < times) {
-                child.reset()
+                child.stop()
+                child.start()
             }
         }
         return InvocationResult.SUCCESS
+    }
+
+    override fun start() {
+        child.start()
+    }
+
+    override fun stop() {
+        child.stop()
     }
 
     class Builder(var times: Int) : TreeNodeUniqueParentBuilder<TreeNodeLoopN>() {

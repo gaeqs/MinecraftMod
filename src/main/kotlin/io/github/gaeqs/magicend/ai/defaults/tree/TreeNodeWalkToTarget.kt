@@ -15,49 +15,33 @@ import net.minecraft.util.math.Vec3d
 
 class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
 
-    private var status = Status.INITIALIZING
-
     private var path: Path? = null
     private var lookTargetPos: BlockPos? = null
+    private var initFailed = true;
 
-    override fun reset() {
-        status = Status.INITIALIZING
+    override fun start() {
+        path = null
+        lookTargetPos = null
+        initFailed = true
+
+        val entity = activity.ai.entity
+        if (entity !is PathAwareEntity) return
+
+        val walkTarget = activity.ai.getMemory(MemoryTypes.WALK_TARGET)
+        if (walkTarget == null || hasReached(walkTarget)) return
+        if (!hasFinishedPath(walkTarget)) return
+
+        initFailed = false
+        entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
     }
 
     override fun invoke(): InvocationResult {
-        return when (status) {
-            Status.INITIALIZING -> init()
-            Status.RUNNING -> run()
-            Status.FINISHED -> InvocationResult.SUCCESS
-        }
-    }
+        if (initFailed) return InvocationResult.FAIL
 
-    private fun init(): InvocationResult {
-        val entity = activity.ai.entity
-        if (entity !is PathAwareEntity) return InvocationResult.FAIL
-
-        val walkTarget = activity.ai.getMemory(MemoryTypes.WALK_TARGET)
-        if (walkTarget == null || hasReached(walkTarget)) {
-            status = Status.FINISHED
-            return InvocationResult.FAIL
-        }
-
-        if (!hasFinishedPath(walkTarget)) {
-            status = Status.FINISHED
-            return InvocationResult.FAIL
-        }
-
-        status = Status.RUNNING
-        entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
-        return InvocationResult.WAIT
-    }
-
-    private fun run(): InvocationResult {
         val entity = activity.ai.entity as PathAwareEntity
         path = entity.navigation.currentPath
         val walkTarget = activity.ai.getMemory(MemoryTypes.WALK_TARGET)
         if (!shouldKeepRunning(walkTarget)) {
-            status = Status.FINISHED
             return InvocationResult.SUCCESS
         }
         walkTarget!!
@@ -69,12 +53,16 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         return InvocationResult.WAIT
     }
 
+    override fun stop() {
+        val entity = activity.ai.entity as PathAwareEntity
+        entity.navigation.stop()
+    }
+
     private fun shouldKeepRunning(walkTarget: WalkTarget?): Boolean {
         val entity = activity.ai.entity as PathAwareEntity
         if (path == null || lookTargetPos == null) return false
         return !entity.navigation.isIdle && walkTarget != null && !hasReached(walkTarget)
     }
-
 
     private fun hasReached(target: WalkTarget) =
         target.lookTarget.blockPos.getManhattanDistance(activity.ai.entity.blockPos) <= target.completionRange
@@ -99,12 +87,6 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         this.path = path
         this.lookTargetPos = walkTarget.lookTarget.blockPos
         return true
-    }
-
-    private enum class Status {
-        INITIALIZING,
-        RUNNING,
-        FINISHED
     }
 
     class Builder : TreeNodeBuilder<TreeNodeWalkToTarget> {

@@ -9,12 +9,6 @@ class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(a
     private var result: InvocationResult? = null
     private var childIndex = 0
 
-    override fun reset() {
-        result = null
-        childIndex = 0
-        children.forEach { it.reset() }
-    }
-
     override fun invoke(): InvocationResult {
         result?.let { return it }
 
@@ -22,10 +16,26 @@ class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(a
         while (childResult != InvocationResult.FAIL && childIndex < children.size) {
             childResult = children[childIndex]()
             if (childResult == InvocationResult.WAIT) return InvocationResult.WAIT
-            childIndex++
+
+            children[childIndex++].stop()
+            if (childResult == InvocationResult.SUCCESS && childIndex < children.size) {
+                children[childIndex].start()
+            }
         }
         result = childResult
         return childResult
+    }
+
+    override fun start() {
+        result = null
+        childIndex = 0
+        if (children.isNotEmpty()) children[0].start()
+    }
+
+    override fun stop() {
+        if (result == null) {
+            children[childIndex].stop()
+        }
     }
 
     class Builder : TreeNodeParentBuilder<TreeNodeAnd>() {

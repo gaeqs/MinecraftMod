@@ -2,6 +2,7 @@ package io.github.gaeqs.magicend.ai
 
 abstract class Activity(val name: String, val ai: EntityAI) {
 
+    abstract val started: Boolean
     abstract val finished: Boolean
 
     abstract fun tick()
