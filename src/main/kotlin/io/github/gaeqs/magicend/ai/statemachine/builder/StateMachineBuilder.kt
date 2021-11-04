@@ -7,4 +7,4 @@ class StateMachineBuilder {
 
 }
 
-fun stateMachine(builder: StateMachineBuilder.() -> Unit) = StateMachineBuilder().apply(builder)
+fun rootStateMachine(builder: StateMachineBuilder.() -> Unit) = StateMachineBuilder().apply(builder)

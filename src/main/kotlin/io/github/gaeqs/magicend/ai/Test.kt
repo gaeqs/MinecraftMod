@@ -10,7 +10,7 @@ class Test {
 
     fun createTree(ai: EntityAI): Activity {
         return TreeActivity("test", ai,
-            loopUnconditional {
+            rootLoopUnconditional {
                 or {
                     and {
                         nul()

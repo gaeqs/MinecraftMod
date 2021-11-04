@@ -8,7 +8,6 @@ interface StateMachine {
     val currentNode: StateMachineNode
 
     val startNode: StateMachineNode
-    val endNode: StateMachineNode
 
     fun changeState(node: String)
 

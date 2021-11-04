@@ -38,6 +38,6 @@ inline fun TreeNodeParentBuilder<*>.loopUntilFail(builder: TreeNodeLoopUntilFail
         builder(it)
     }
 
-inline fun loopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit): TreeNodeLoopUntilFail.Builder {
+inline fun rootLoopUntilFail(builder: TreeNodeLoopUntilFail.Builder.() -> Unit): TreeNodeLoopUntilFail.Builder {
     return TreeNodeLoopUntilFail.Builder().also(builder)
 }

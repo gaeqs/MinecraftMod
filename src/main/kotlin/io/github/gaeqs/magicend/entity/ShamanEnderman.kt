@@ -5,8 +5,9 @@ import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
 import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
 import io.github.gaeqs.magicend.ai.statemachine.StateMachineActivity
-import io.github.gaeqs.magicend.ai.statemachine.builder.stateMachine
+import io.github.gaeqs.magicend.ai.statemachine.builder.rootStateMachine
 import io.github.gaeqs.magicend.ai.statemachine.node.lambda
+import io.github.gaeqs.magicend.ai.statemachine.node.tree
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -23,7 +24,6 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import kotlin.random.Random
-import kotlin.random.nextUInt
 
 class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : PathAwareEntity(type, world), TopTextured {
 
@@ -78,48 +78,56 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
     }
 
     private fun initAI() {
-        ai.coreActivity = TreeActivity("core", ai, loopUnconditional {
+        ai.coreActivity = TreeActivity("core", ai, rootLoopUnconditional {
             and {
                 findWalkTarget(1.0f)
-
                 succeeder {
                     timed(20, 40) {
                         walkToTarget()
                     }
                 }
-
-                lambda {
-                    start {
-                        println("START")
-                    }
-                    tick {
-                        println("INVOKE!")
-                        TreeNode.InvocationResult.SUCCESS
-                    }
-                    stop {
-                        println("STOP")
-                    }
-                }
-
                 wait(100)
             }
         })
 
-        ai.activities += StateMachineActivity("idle", ai, stateMachine {
+        ai.activities += StateMachineActivity("idle", ai, rootStateMachine {
             lambda("start") {
                 start { topTexture = MESSAGE_1 }
                 tick {
-                    if (Random.Default.nextInt(0, 20) == 0) {
+                    if (Random.Default.nextInt(0, 100) == 0) {
                         changeState("state2")
                     }
                 }
             }
-            lambda("state2") {
-                start { topTexture = MESSAGE_2 }
-                tick {
-                    if (Random.Default.nextInt(0, 20) == 0) {
-                        changeState("start")
+
+            tree("state2") {
+                root = rootAnd {
+                    lambda {
+                        tick {
+                            println("STATE 2 IS A TREE NODE!")
+                            topTexture = MESSAGE_2
+                            TreeNode.InvocationResult.SUCCESS
+                        }
                     }
+                    wait(50)
+                    stateMachine {
+                        lambda("start") {
+                            tick {
+                                println("WOOO STATE MACHINE INSIDE ROOT INSIDE STATE MACHINE")
+                                changeState("state2")
+                            }
+                        }
+
+                        lambda("state2") {
+                            tick {
+                                println("I CAN EXIT THE STATE MACHINE CHANGING TO THE SUCCESS/FAIL STATE!")
+                                changeState("success")
+                            }
+                        }
+                    }
+                }
+                success {
+                    changeState("start")
                 }
             }
         })

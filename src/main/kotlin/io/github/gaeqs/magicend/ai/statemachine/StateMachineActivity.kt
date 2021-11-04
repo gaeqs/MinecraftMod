@@ -8,35 +8,37 @@ import io.github.gaeqs.magicend.ai.statemachine.node.StateMachineNode
 class StateMachineActivity(name: String, ai: EntityAI, builder: StateMachineBuilder) : Activity(name, ai),
     StateMachine {
 
+    init {
+        if (builder.nodes.any { it.name == "end" }) {
+            throw IllegalArgumentException("'end' is a reserved state machine in a state machine activity!")
+        }
+    }
+
     override var started: Boolean = false
         private set
     override var finished: Boolean = false
         private set
 
-    private val _nodes = builder.nodes.map { it.build(this, this) }.associateBy { it.name }
-    override val nodes: Set<StateMachineNode> = _nodes.values.toSet()
-
-    override val startNode = _nodes[builder.startNode]
-        ?: throw IllegalArgumentException("Couldn't find start node ${builder.startNode}!")
-
-    override var currentNode: StateMachineNode = startNode
-
-    override val endNode: StateMachineNode =
+    private val endNode: StateMachineNode =
         object : StateMachineNode("end", this, this) {
             override fun start() {
                 finished = true
             }
 
-            override fun tick() {
-            }
-
-            override fun stop() {
-            }
+            override fun tick() {}
+            override fun stop() {}
         }
+
+    private val _nodes = (builder.nodes.map { it.build(this, this) } + endNode).associateBy { it.name }
+    override val nodes: Set<StateMachineNode> = _nodes.values.toSet()
+    override val startNode = _nodes[builder.startNode]
+        ?: throw IllegalArgumentException("Couldn't find start node ${builder.startNode}!")
+    override var currentNode: StateMachineNode = startNode
 
     override fun tick() {
         if (!started) {
             currentNode.start()
+            started = true
         }
         if (!finished) {
             currentNode.tick()
@@ -54,6 +56,7 @@ class StateMachineActivity(name: String, ai: EntityAI, builder: StateMachineBuil
     }
 
     override fun changeState(node: String) {
+        if (finished) return
         if (started) currentNode.stop()
         currentNode = _nodes[node] ?: throw IllegalArgumentException("Couldn't find node $node!")
         if (started) currentNode.start()

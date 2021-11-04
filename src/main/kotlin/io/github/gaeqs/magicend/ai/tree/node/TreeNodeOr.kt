@@ -48,6 +48,6 @@ inline fun TreeNodeParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) =
     builder(it)
 }
 
-inline fun or(builder: TreeNodeOr.Builder.() -> Unit): TreeNodeOr.Builder {
+inline fun rootOr(builder: TreeNodeOr.Builder.() -> Unit): TreeNodeOr.Builder {
     return TreeNodeOr.Builder().also(builder)
 }

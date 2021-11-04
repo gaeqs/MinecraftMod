@@ -29,4 +29,4 @@ class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationR
     }
 }
 
-fun TreeNodeParentBuilder<*>.wait(times: Int) = addChild(TreeNodeWaiter.Builder(times))
+fun TreeNodeParentBuilder<*>.wait(ticks: Int) = addChild(TreeNodeWaiter.Builder(ticks))

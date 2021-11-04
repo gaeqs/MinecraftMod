@@ -15,6 +15,7 @@ class TreeActivity(name: String, ai: EntityAI, rootProvider: TreeNodeBuilder<*>)
         private set
 
     override fun tick() {
+        if (finished) return
         if (!started) {
             root.start()
             started = true
@@ -27,7 +28,7 @@ class TreeActivity(name: String, ai: EntityAI, rootProvider: TreeNodeBuilder<*>)
     }
 
     override fun reset() {
-        if(started && !finished) {
+        if (started && !finished) {
             root.stop()
         }
 
