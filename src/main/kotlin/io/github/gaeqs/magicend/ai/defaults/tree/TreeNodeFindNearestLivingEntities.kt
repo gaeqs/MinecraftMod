@@ -5,18 +5,10 @@ import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
+import io.github.gaeqs.magicend.util.isEntityTargeteable
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.ai.TargetPredicate
 
 class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity) {
-
-    companion object {
-        private val TARGET_CONDITIONS =
-            TargetPredicate().setBaseMaxDistance(16.0).includeTeammates().ignoreEntityTargetRules()
-        private val TARGET_CONDITIONS_IGNORE_INVISIBILITY_TESTING =
-            TargetPredicate().setBaseMaxDistance(16.0).includeTeammates()
-                .ignoreEntityTargetRules().ignoreDistanceScalingFactor()
-    }
 
     override fun start() {
     }
@@ -28,20 +20,12 @@ class TreeNodeFindNearestLivingEntities(activity: Activity) : TreeNode(activity)
         }
 
         ai.remember(MemoryTypes.NEARBY_LIVING_ENTITIES, list)
-        ai.remember(MemoryTypes.VISIBLE_NEARBY_LIVING_ENTITIES, list.filter { isEntityTargeteable(it) })
+        ai.remember(MemoryTypes.VISIBLE_NEARBY_LIVING_ENTITIES, list.filter { entity.isEntityTargeteable(it, ai) })
 
         return InvocationResult.SUCCESS
     }
 
     override fun stop() {
-    }
-
-    private fun isEntityTargeteable(target: LivingEntity): Boolean {
-        return if (ai.hasMemory(MemoryTypes.ATTACK_TARGET)) {
-            TARGET_CONDITIONS_IGNORE_INVISIBILITY_TESTING.test(ai.entity, target)
-        } else {
-            TARGET_CONDITIONS.test(ai.entity, target)
-        }
     }
 
 

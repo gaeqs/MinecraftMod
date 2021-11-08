@@ -2,7 +2,9 @@ package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.EntityAI
+import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
 import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
+import io.github.gaeqs.magicend.ai.defaults.tree.lookAtNearestLivingEntity
 import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
 import io.github.gaeqs.magicend.ai.statemachine.StateMachineActivity
 import io.github.gaeqs.magicend.ai.statemachine.builder.rootStateMachine
@@ -81,9 +83,15 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
         ai.coreActivity = TreeActivity("core", ai, rootLoopUnconditional {
             and {
                 findWalkTarget(1.0f)
+                findNearestLivingEntities()
                 succeeder {
-                    timed(20, 40) {
-                        walkToTarget()
+                    simultaneously {
+                        timed(50, 100) {
+                            lookAtNearestLivingEntity()
+                        }
+                        timed(50, 200) {
+                            walkToTarget()
+                        }
                     }
                 }
                 wait(100)
