@@ -10,7 +10,7 @@ class TreeNodeLoopUntilFail(activity: Activity, val child: TreeNode) : TreeNode(
         while (true) {
             when (child.tick()) {
                 InvocationResult.WAIT -> return InvocationResult.WAIT
-                InvocationResult.FAIL -> return InvocationResult.FAIL
+                InvocationResult.FAIL -> return InvocationResult.SUCCESS
                 else -> {
                     child.stop()
                     child.start()
