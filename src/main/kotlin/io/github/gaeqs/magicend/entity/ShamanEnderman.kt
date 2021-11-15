@@ -22,6 +22,7 @@ import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.data.DataTracker
 import net.minecraft.entity.data.TrackedDataHandlerRegistry
 import net.minecraft.entity.mob.PathAwareEntity
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
@@ -77,6 +78,23 @@ class ShamanEnderman(type: EntityType<out PathAwareEntity>, world: World) : Path
         world.profiler.push("shamanBrain")
         ai.tick()
         world.profiler.pop()
+    }
+
+    override fun tickMovement() {
+        if (world.isClient) {
+            repeat(2) {
+                world.addParticle(
+                    ParticleTypes.PORTAL,
+                    getParticleX(0.5),
+                    this.randomBodyY - 0.25,
+                    getParticleZ(0.5),
+                    (random.nextDouble() - 0.5) * 2.0,
+                    -random.nextDouble(),
+                    (random.nextDouble() - 0.5) * 2.0
+                )
+            }
+        }
+        super.tickMovement()
     }
 
     private fun initAI() {
