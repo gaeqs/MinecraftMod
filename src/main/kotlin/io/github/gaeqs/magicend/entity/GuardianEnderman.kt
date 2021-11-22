@@ -20,13 +20,13 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 import kotlin.random.Random
 
-class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : EnderVillager(type, world) {
+class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : EnderVillager(type, world) {
 
     companion object {
-        val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "shaman_enderman")
+        val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "guardian_enderman")
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE,
-            EntityType.EntityFactory<ShamanEnderman> { type, world -> ShamanEnderman(type, world) }
+            EntityType.EntityFactory<GuardianEnderman> { type, world -> GuardianEnderman(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
@@ -39,6 +39,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
     }
 
     private fun initAI() {
+
         ai.activities += TreeActivity("idle", ai, rootLoopUnconditional {
             and {
                 findWalkTarget(1.0f)
@@ -56,6 +57,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
                 wait(100)
             }
         })
+
     }
 
 }

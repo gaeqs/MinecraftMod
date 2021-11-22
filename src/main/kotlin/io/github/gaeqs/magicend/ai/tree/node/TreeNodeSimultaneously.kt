@@ -75,3 +75,8 @@ inline fun TreeNodeParentBuilder<*>.simultaneously(
     addChild(it)
     builder(it)
 }
+
+inline fun rootSimultaneously(
+    mode: TreeNodeSimultaneously.Mode = TreeNodeSimultaneously.Mode.OR,
+    builder: TreeNodeSimultaneously.Builder.() -> Unit
+) = TreeNodeSimultaneously.Builder(mode).also { builder(it) }

@@ -4,6 +4,8 @@ import io.github.gaeqs.magicend.block.*
 /*import io.github.gaeqs.magicend.block.EndWindowBlock
 import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import io.github.gaeqs.magicend.entity.ExampleEntity
+import io.github.gaeqs.magicend.entity.FarmerEnderman
+import io.github.gaeqs.magicend.entity.GuardianEnderman
 import io.github.gaeqs.magicend.entity.ShamanEnderman
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
@@ -52,6 +54,18 @@ object MinecraftMod : ModInitializer {
         FabricDefaultAttributeRegistry.register(
             ShamanEnderman.ENTITY_TYPE,
             ShamanEnderman.createExampleEntityAttributes()
+        )
+
+        Registry.register(Registry.ENTITY_TYPE, FarmerEnderman.IDENTIFIER, FarmerEnderman.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            FarmerEnderman.ENTITY_TYPE,
+            FarmerEnderman.createExampleEntityAttributes()
+        )
+
+        Registry.register(Registry.ENTITY_TYPE, GuardianEnderman.IDENTIFIER, GuardianEnderman.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            GuardianEnderman.ENTITY_TYPE,
+            GuardianEnderman.createExampleEntityAttributes()
         )
     }
 }
