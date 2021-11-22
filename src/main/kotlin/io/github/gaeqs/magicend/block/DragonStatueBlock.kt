@@ -45,7 +45,6 @@ class DragonStatueBlock : Block(FabricBlockSettings.of(Material.STONE).strength(
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext): BlockState? {
-        println(ctx.playerFacing.rotateYClockwise())
         return super.getPlacementState(ctx)?.with(EndWindowBlock.FACING, ctx.playerFacing.rotateYClockwise())
     }
 

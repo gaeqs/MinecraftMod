@@ -36,6 +36,9 @@ class TreeNodeSimultaneously(activity: Activity, val mode: Mode, val children: L
                         this.result = InvocationResult.SUCCESS
                     }
                 }
+                Mode.FIRST -> {
+                    this.result = result
+                }
             }
 
             if (result == InvocationResult.SUCCESS && mode == Mode.OR) {
@@ -44,7 +47,8 @@ class TreeNodeSimultaneously(activity: Activity, val mode: Mode, val children: L
 
         }
 
-        return if (executingChildren.isEmpty()) result!! else InvocationResult.WAIT
+        return if (executingChildren.isEmpty() || mode == Mode.FIRST && result != null) result!!
+        else InvocationResult.WAIT
     }
 
     override fun start() {
@@ -64,7 +68,7 @@ class TreeNodeSimultaneously(activity: Activity, val mode: Mode, val children: L
 
 
     enum class Mode {
-        OR, AND
+        OR, AND, FIRST
     }
 }
 

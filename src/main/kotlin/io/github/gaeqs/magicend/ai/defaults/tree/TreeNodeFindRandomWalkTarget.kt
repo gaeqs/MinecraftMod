@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.TargetFinder
 import net.minecraft.entity.ai.brain.WalkTarget
 import net.minecraft.entity.mob.PathAwareEntity
 
-class TreeNodeFindWalkTarget(
+class TreeNodeFindRandomWalkTarget(
     activity: Activity,
     val speed: Float,
     val horizontalRadius: Int,
@@ -33,12 +33,12 @@ class TreeNodeFindWalkTarget(
     }
 
     class Builder(
-        val speed: Float,
-        val horizontalRadius: Int,
-        val verticalRadius: Int
-    ) : TreeNodeBuilder<TreeNodeFindWalkTarget> {
+        var speed: Float,
+        var horizontalRadius: Int,
+        var verticalRadius: Int
+    ) : TreeNodeBuilder<TreeNodeFindRandomWalkTarget> {
         override fun build(activity: Activity) =
-            TreeNodeFindWalkTarget(activity, speed, horizontalRadius, verticalRadius)
+            TreeNodeFindRandomWalkTarget(activity, speed, horizontalRadius, verticalRadius)
     }
 
     override fun stop() {
@@ -47,4 +47,4 @@ class TreeNodeFindWalkTarget(
 }
 
 fun TreeNodeParentBuilder<*>.findWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) =
-    addChild(TreeNodeFindWalkTarget.Builder(speed, horizontalRadius, verticalRadius))
+    addChild(TreeNodeFindRandomWalkTarget.Builder(speed, horizontalRadius, verticalRadius))
