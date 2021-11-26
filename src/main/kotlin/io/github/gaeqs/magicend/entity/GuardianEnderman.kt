@@ -1,7 +1,10 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
-import io.github.gaeqs.magicend.ai.defaults.tree.*
+import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
+import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
+import io.github.gaeqs.magicend.ai.defaults.tree.lookAtNearestLivingEntity
+import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -11,14 +14,10 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.entity.data.DataTracker
-import net.minecraft.entity.data.TrackedDataHandlerRegistry
-import net.minecraft.entity.mob.PathAwareEntity
-import net.minecraft.particle.ParticleTypes
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
-import kotlin.random.Random
 
 class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : EnderVillager(type, world) {
 
@@ -34,9 +33,28 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         }
     }
 
+    var kills: Int = 0
+
     init {
         initAI()
     }
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        super.readCustomDataFromNbt(nbt)
+        kills = nbt.getInt("kills")
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        super.writeCustomDataToNbt(nbt)
+        nbt.putInt("kills", kills)
+    }
+
+
+    override fun onKilledOther(world: ServerWorld?, other: LivingEntity?) {
+        super.onKilledOther(world, other)
+        kills++
+    }
+
 
     private fun initAI() {
 
@@ -59,5 +77,4 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         })
 
     }
-
 }

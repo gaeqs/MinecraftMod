@@ -4,9 +4,12 @@ import io.github.gaeqs.magicend.MinecraftMod
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.world.World
 
@@ -24,8 +27,25 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : FlyingAIEntity(
         }
     }
 
+    var shamanKills: Int = 0
+
     init {
         initAI()
+    }
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        super.readCustomDataFromNbt(nbt)
+        shamanKills = nbt.getInt("shaman_kills")
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        super.writeCustomDataToNbt(nbt)
+        nbt.putInt("shaman_kills", shamanKills)
+    }
+
+    override fun onKilledOther(world: ServerWorld?, other: LivingEntity?) {
+        super.onKilledOther(world, other)
+        if (other is ShamanEnderman) shamanKills++
     }
 
     private fun initAI() {

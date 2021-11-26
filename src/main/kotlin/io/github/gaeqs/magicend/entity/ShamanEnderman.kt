@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
 import net.minecraft.world.World
 
@@ -32,8 +33,21 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
         }
     }
 
+    var sacrifices: Int = 0
+
     init {
         initAI()
+    }
+
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        super.readCustomDataFromNbt(nbt)
+        sacrifices = nbt.getInt("sacrifices")
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        super.writeCustomDataToNbt(nbt)
+        nbt.putInt("sacrifices", sacrifices)
     }
 
     private fun initAI() {

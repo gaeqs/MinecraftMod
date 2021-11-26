@@ -1,18 +1,15 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
-import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
-import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
-import io.github.gaeqs.magicend.ai.defaults.tree.lookAtNearestLivingEntity
-import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
-import io.github.gaeqs.magicend.ai.tree.TreeActivity
-import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.world.World
 
@@ -30,9 +27,27 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
         }
     }
 
+    var kills: Int = 0
+
     init {
         initAI()
     }
+
+    override fun readCustomDataFromNbt(nbt: NbtCompound) {
+        super.readCustomDataFromNbt(nbt)
+        kills = nbt.getInt("kills")
+    }
+
+    override fun writeCustomDataToNbt(nbt: NbtCompound) {
+        super.writeCustomDataToNbt(nbt)
+        nbt.putInt("kills", kills)
+    }
+
+    override fun onKilledOther(world: ServerWorld?, other: LivingEntity?) {
+        super.onKilledOther(world, other)
+        kills++
+    }
+
 
     private fun initAI() {
     }
