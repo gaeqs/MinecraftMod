@@ -1,14 +1,15 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
+import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.defaults.tree.findPointOfInterest
-import io.github.gaeqs.magicend.ai.defaults.tree.findPositionWalkTarget
-import io.github.gaeqs.magicend.ai.defaults.tree.isNearPosition
-import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
+import io.github.gaeqs.magicend.ai.defaults.tree.walkToPosition
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
-import io.github.gaeqs.magicend.ai.tree.node.*
-import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
+import io.github.gaeqs.magicend.ai.tree.node.and
+import io.github.gaeqs.magicend.ai.tree.node.or
+import io.github.gaeqs.magicend.ai.tree.node.rootLoopUnconditional
+import io.github.gaeqs.magicend.ai.tree.node.wait
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
@@ -53,34 +54,14 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
     private fun initAI() {
         ai.activities += TreeActivity("idle", ai,
             rootLoopUnconditional {
-                and {
-                    succeeder {
-                        and {
-                            // Find a point.
-                            findPointOfInterest(PointOfInterestTypes.DRAGON_STATUE, MemoryTypes.POINT_OF_INTEREST, 48)
-
-                            // If it's already in the position, wait 2.5s and go back.
-                            inverter {
-                                and {
-                                    isNearPosition(MemoryTypes.POINT_OF_INTEREST)
-                                    wait(100)
-                                }
-                            }
-
-                            // Find the path.
-                            findPositionWalkTarget(MemoryTypes.POINT_OF_INTEREST, 3.0f)
-
-                            // We need the timer because the walk target pathfinder works like sh** and needs to reload.
-                            // Thx Minecraft. :)
-                            timed(10, 20) {
-                                // Walk a little.
-                                walkToTarget()
-                            }
-
-                            // Refresh
-                        }
+                or {
+                    and {
+                        findPointOfInterest(PointOfInterestTypes.DRAGON_STATUE, MemoryTypes.POINT_OF_INTEREST, 48)
+                        walkToPosition(MemoryTypes.POINT_OF_INTEREST, 2.0f)
+                        // Position reached successfully. Waiting.
+                        wait(50)
                     }
-                    // Just in case skip a tick.
+                    // Walk failed! Just in case skip a tick.
                     wait(1)
                 }
             }

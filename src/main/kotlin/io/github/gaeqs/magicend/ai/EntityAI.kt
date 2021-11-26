@@ -63,6 +63,7 @@ class EntityAI(val entity: LivingEntity) {
             memories.remove(type)
             return null
         }
+
         return try {
             @Suppress("UNCHECKED_CAST")
             memory.value as T

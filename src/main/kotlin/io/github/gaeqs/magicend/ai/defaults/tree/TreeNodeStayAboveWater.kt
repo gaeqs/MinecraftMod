@@ -7,7 +7,7 @@ import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import net.minecraft.entity.mob.MobEntity
 import net.minecraft.tag.FluidTags
 
-class StayAboveWater(activity: Activity, val chance: Float) : TreeNode(activity) {
+class TreeNodeStayAboveWater(activity: Activity, val chance: Float) : TreeNode(activity) {
 
     override fun start() {
     }
@@ -33,9 +33,9 @@ class StayAboveWater(activity: Activity, val chance: Float) : TreeNode(activity)
     override fun stop() {
     }
 
-    class Builder(var chance: Float) : TreeNodeBuilder<StayAboveWater> {
-        override fun build(activity: Activity) = StayAboveWater(activity, chance)
+    class Builder(var chance: Float) : TreeNodeBuilder<TreeNodeStayAboveWater> {
+        override fun build(activity: Activity) = TreeNodeStayAboveWater(activity, chance)
     }
 }
 
-fun TreeNodeParentBuilder<*>.stayAboveWater(chance: Float = 0.8f) = addChild(StayAboveWater.Builder(chance))
+fun TreeNodeParentBuilder<*>.stayAboveWater(chance: Float = 0.8f) = addChild(TreeNodeStayAboveWater.Builder(chance))

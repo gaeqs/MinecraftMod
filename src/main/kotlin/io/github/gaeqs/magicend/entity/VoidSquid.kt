@@ -20,7 +20,7 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : FlyingAIEntity(
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<VoidSquid> { type, world -> VoidSquid(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.8f, 0.8f)).build()
+        ).dimensions(EntityDimensions.fixed(0.8f, 2.0f)).build()
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)

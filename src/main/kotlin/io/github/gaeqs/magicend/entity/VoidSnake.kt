@@ -23,7 +23,7 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<VoidSnake> { type, world -> VoidSnake(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.8f, 0.8f)).build()
+        ).dimensions(EntityDimensions.fixed(1.5f, 0.8f)).build()
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
