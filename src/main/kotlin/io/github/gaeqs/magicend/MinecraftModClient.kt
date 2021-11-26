@@ -1,12 +1,7 @@
 package io.github.gaeqs.magicend
 
-import io.github.gaeqs.magicend.entity.FarmerEnderman
-import io.github.gaeqs.magicend.entity.GuardianEnderman
-import io.github.gaeqs.magicend.entity.ShamanEnderman
-import io.github.gaeqs.magicend.entity.render.ExampleEntityRenderer
-import io.github.gaeqs.magicend.entity.render.FarmerEndermanRenderer
-import io.github.gaeqs.magicend.entity.render.GuardianEndermanRenderer
-import io.github.gaeqs.magicend.entity.render.ShamanEndermanRenderer
+import io.github.gaeqs.magicend.entity.*
+import io.github.gaeqs.magicend.entity.render.*
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry
 
@@ -22,6 +17,12 @@ object MinecraftModClient : ClientModInitializer {
         { dispatcher, _ -> GuardianEndermanRenderer(dispatcher) }
         EntityRendererRegistry.INSTANCE.register(ShamanEnderman.ENTITY_TYPE)
         { dispatcher, _ -> ShamanEndermanRenderer(dispatcher) }
+        EntityRendererRegistry.INSTANCE.register(VoidSnake.ENTITY_TYPE)
+        { dispatcher, _ -> VoidSnakeRenderer(dispatcher) }
+        EntityRendererRegistry.INSTANCE.register(VoidWorm.ENTITY_TYPE)
+        { dispatcher, _ -> VoidWormRenderer(dispatcher) }
+        EntityRendererRegistry.INSTANCE.register(VoidSquid.ENTITY_TYPE)
+        { dispatcher, _ -> VoidSquidRenderer(dispatcher) }
     }
 
 }

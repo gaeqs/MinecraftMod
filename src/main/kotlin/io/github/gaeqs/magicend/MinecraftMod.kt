@@ -1,12 +1,9 @@
 package io.github.gaeqs.magicend
 
 import io.github.gaeqs.magicend.block.*
+import io.github.gaeqs.magicend.entity.*
 /*import io.github.gaeqs.magicend.block.EndWindowBlock
 import io.github.gaeqs.magicend.block.EnderCoreBlock*/
-import io.github.gaeqs.magicend.entity.ExampleEntity
-import io.github.gaeqs.magicend.entity.FarmerEnderman
-import io.github.gaeqs.magicend.entity.GuardianEnderman
-import io.github.gaeqs.magicend.entity.ShamanEnderman
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -66,6 +63,24 @@ object MinecraftMod : ModInitializer {
         FabricDefaultAttributeRegistry.register(
             GuardianEnderman.ENTITY_TYPE,
             GuardianEnderman.createExampleEntityAttributes()
+        )
+
+        Registry.register(Registry.ENTITY_TYPE, VoidSnake.IDENTIFIER, VoidSnake.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            VoidSnake.ENTITY_TYPE,
+            VoidSnake.createExampleEntityAttributes()
+        )
+
+        Registry.register(Registry.ENTITY_TYPE, VoidWorm.IDENTIFIER, VoidWorm.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            VoidWorm.ENTITY_TYPE,
+            VoidWorm.createExampleEntityAttributes()
+        )
+
+        Registry.register(Registry.ENTITY_TYPE, VoidSquid.IDENTIFIER, VoidSquid.ENTITY_TYPE)
+        FabricDefaultAttributeRegistry.register(
+            VoidSquid.ENTITY_TYPE,
+            VoidSquid.createExampleEntityAttributes()
         )
     }
 }

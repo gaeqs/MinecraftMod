@@ -1,49 +1,20 @@
 package io.github.gaeqs.magicend.entity
 
-import io.github.gaeqs.magicend.ai.EntityAI
-import io.github.gaeqs.magicend.ai.defaults.tree.stayAboveWater
-import io.github.gaeqs.magicend.ai.tree.TreeActivity
-import io.github.gaeqs.magicend.ai.tree.node.and
-import io.github.gaeqs.magicend.ai.tree.node.rootLoopUnconditional
-import io.github.gaeqs.magicend.ai.tree.node.rootSimultaneously
-import io.github.gaeqs.magicend.ai.tree.node.wait
 import io.github.gaeqs.magicend.village.EndVillage
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.mob.PathAwareEntity
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.server.network.DebugInfoSender
 import net.minecraft.world.World
 
 open class EnderVillager(
     type: EntityType<out EnderVillager>,
     world: World
-) : PathAwareEntity(type, world) {
-
-    val ai = EntityAI(this)
+) : AIEntity(type, world) {
 
     var village: EndVillage
         private set
 
     init {
-        initAI()
         village = EndVillage().apply { add(this@EnderVillager) }
-    }
-
-    override fun mobTick() {
-        world.profiler.push("enderVillagerBrain")
-        ai.tick()
-        world.profiler.pop()
-    }
-
-    private fun initAI() {
-        ai.coreActivity = TreeActivity("core", ai, rootSimultaneously {
-            rootLoopUnconditional {
-                and {
-                    stayAboveWater(0.5f)
-                    wait(10)
-                }
-            }
-        })
     }
 
 
