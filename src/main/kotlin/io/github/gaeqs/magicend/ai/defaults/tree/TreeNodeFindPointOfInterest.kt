@@ -16,7 +16,8 @@ class TreeNodeFindPointOfInterest(
     activity: Activity,
     val point: PointOfInterestType,
     val memory: MemoryType<GlobalPos>,
-    val radius: Int
+    val radius: Int,
+    val condition: (BlockPos) -> Boolean
 ) : TreeNode(activity) {
 
     override fun start() {
@@ -29,7 +30,7 @@ class TreeNodeFindPointOfInterest(
 
         val position = world.pointOfInterestStorage.getPositions(
             point.completionCondition,
-            { testBlockPos(it) },
+            { condition(it) && testBlockPos(it) },
             entity.blockPos,
             radius,
             PointOfInterestStorage.OccupationStatus.ANY
@@ -54,9 +55,10 @@ class TreeNodeFindPointOfInterest(
     class Builder(
         var point: PointOfInterestType,
         var memory: MemoryType<GlobalPos>,
-        var radius: Int
+        var radius: Int,
+        var condition: (BlockPos) -> Boolean
     ) : TreeNodeBuilder<TreeNodeFindPointOfInterest> {
-        override fun build(activity: Activity) = TreeNodeFindPointOfInterest(activity, point, memory, radius)
+        override fun build(activity: Activity) = TreeNodeFindPointOfInterest(activity, point, memory, radius, condition)
     }
 
     override fun stop() {
@@ -67,5 +69,6 @@ class TreeNodeFindPointOfInterest(
 fun TreeNodeParentBuilder<*>.findPointOfInterest(
     point: PointOfInterestType,
     memory: MemoryType<GlobalPos>,
-    radius: Int
-) = addChild(TreeNodeFindPointOfInterest.Builder(point, memory, radius))
+    radius: Int,
+    condition: (BlockPos) -> Boolean = { true }
+) = addChild(TreeNodeFindPointOfInterest.Builder(point, memory, radius, condition))

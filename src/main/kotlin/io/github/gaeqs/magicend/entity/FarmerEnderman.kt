@@ -1,24 +1,21 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
-import io.github.gaeqs.magicend.ai.defaults.tree.*
+import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
+import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
+import io.github.gaeqs.magicend.ai.defaults.tree.findPointOfInterest
+import io.github.gaeqs.magicend.ai.defaults.tree.walkToPosition
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
+import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.entity.data.DataTracker
-import net.minecraft.entity.data.TrackedDataHandlerRegistry
-import net.minecraft.entity.mob.PathAwareEntity
-import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
-import kotlin.random.Random
 
 class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : EnderVillager(type, world) {
 
@@ -40,20 +37,35 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
 
     private fun initAI() {
         ai.activities += TreeActivity("idle", ai, rootLoopUnconditional {
-            and {
-                findWalkTarget(1.0f)
-                findNearestLivingEntities()
-                succeeder {
-                    simultaneously {
-                        timed(50, 100) {
-                            lookAtNearestLivingEntity()
-                        }
-                        timed(50, 200) {
-                            walkToTarget()
+            or {
+                and {
+                    findPointOfInterest(PointOfInterestTypes.ENDER_BREAD_PLATE, MemoryTypes.POINT_OF_INTEREST, 48) {
+                        val entity = world.getBlockEntity(it)
+                        entity is EnderBreadPlateBlockEntity && !entity.isFull()
+                    }
+                    walkToPosition(MemoryTypes.POINT_OF_INTEREST, 2.0f)
+                    // Position reached successfully. Waiting.
+                    wait(20)
+                    lambda {
+                        tick {
+                            val pos = ai.getMemory(MemoryTypes.POINT_OF_INTEREST)
+                                ?: return@tick TreeNode.InvocationResult.FAIL
+
+                            val entity = world.getBlockEntity(pos.pos)
+                            if (entity !is EnderBreadPlateBlockEntity || entity.isFull())
+                                return@tick TreeNode.InvocationResult.FAIL
+
+                            entity.amount++
+
+                            TreeNode.InvocationResult.SUCCESS
                         }
                     }
+                    wait(50)
                 }
-                wait(100)
+                and {
+                    // Walk failed! Just in case skip a tick.
+                    wait(10)
+                }
             }
         })
 

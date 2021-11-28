@@ -3,6 +3,7 @@ package io.github.gaeqs.magicend.ai.defaults
 import com.google.common.collect.ImmutableSet
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.block.DragonStatueBlock
+import io.github.gaeqs.magicend.block.EnderBreadPlateBlock
 import net.fabricmc.fabric.mixin.`object`.builder.PointOfInterestTypeAccessor
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -15,6 +16,11 @@ object PointOfInterestTypes {
     val DRAGON_STATUE = register(
         Identifier(MinecraftMod.MOD_ID, "dragon_statue"),
         getAllStatesOf(DragonStatueBlock.BLOCK), 32, 100
+    )
+
+    val ENDER_BREAD_PLATE = register(
+        Identifier(MinecraftMod.MOD_ID, "ender_bread_plate"),
+        getAllStatesOf(EnderBreadPlateBlock.BLOCK), 32, 100
     )
 
     fun register(

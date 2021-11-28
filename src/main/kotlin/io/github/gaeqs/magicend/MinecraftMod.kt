@@ -40,6 +40,15 @@ object MinecraftMod : ModInitializer {
 
         Registry.register(Registry.BLOCK, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK)
         Registry.register(Registry.ITEM, DragonStatueBlock.IDENTIFIER, DragonStatueBlock.BLOCK_ITEM)
+
+        Registry.register(Registry.BLOCK, EnderBreadPlateBlock.IDENTIFIER, EnderBreadPlateBlock.BLOCK)
+        Registry.register(Registry.ITEM, EnderBreadPlateBlock.IDENTIFIER, EnderBreadPlateBlock.BLOCK_ITEM)
+        Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            EnderBreadPlateBlock.IDENTIFIER,
+            EnderBreadPlateBlock.BLOCK_ENTITY
+        )
+
         registerEntities()
     }
 
