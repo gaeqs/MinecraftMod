@@ -41,13 +41,8 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
             runAndWait {
                 or {
                     and {
-                        succeeder {
-                            and {
-                                predicate { ai.getMemory(MemoryTypes.ATTACK_TARGET)?.isAlive != true }
-                                findNearestLivingEntities()
-                                findAttackTarget { it is EnderVillager }
-                            }
-                        }
+                        findNearestLivingEntities()
+                        findAttackTargetIfNotFound { it is EnderVillager }
                         walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 2.0f)
                         succeeder {
                             attack()

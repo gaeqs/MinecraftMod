@@ -1,5 +1,6 @@
 package io.github.gaeqs.magicend.ai.defaults.tree
 
+import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.memory.MemoryType
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
@@ -65,5 +66,19 @@ fun TreeNodeParentBuilder<*>.runAndWait(builder: TreeNodeSucceeder.Builder.() ->
             builder()
         }
         wait(1)
+    }
+}
+
+fun TreeNodeParentBuilder<*>.findAttackTargetIfNotFound(condition: (LivingEntity) -> Boolean) {
+    and {
+        succeeder {
+            and {
+                inverter {
+                    isAttackTargetValid(MemoryTypes.ATTACK_TARGET)
+                }
+                findAttackTarget(condition)
+            }
+        }
+        isAttackTargetValid(MemoryTypes.ATTACK_TARGET)
     }
 }
