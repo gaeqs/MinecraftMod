@@ -1,10 +1,8 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
-import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
-import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
-import io.github.gaeqs.magicend.ai.defaults.tree.lookAtNearestLivingEntity
-import io.github.gaeqs.magicend.ai.defaults.tree.walkToTarget
+import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
+import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -26,7 +24,11 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
         ).dimensions(EntityDimensions.fixed(1.5f, 0.8f)).build()
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
-            return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+            return createMobAttributes()
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 30.0)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
         }
     }
 
@@ -35,6 +37,31 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
     }
 
     private fun initAI() {
+        ai.activities += TreeActivity("", ai, rootLoopUnconditional {
+            runAndWait {
+                or {
+                    and {
+                        succeeder {
+                            and {
+                                predicate { ai.getMemory(MemoryTypes.ATTACK_TARGET)?.isAlive != true }
+                                findNearestLivingEntities()
+                                findAttackTarget { it is EnderVillager }
+                            }
+                        }
+                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 2.0f)
+                        succeeder {
+                            attack()
+                        }
+                    }
+                    and {
+                        findRandomWalkTarget(1.0f)
+                        timed(40, 60) {
+                            walkToTarget()
+                        }
+                    }
+                }
+            }
+        })
     }
 
 }

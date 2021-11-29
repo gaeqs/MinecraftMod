@@ -1,7 +1,7 @@
 package io.github.gaeqs.magicend.ai
 
 import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
-import io.github.gaeqs.magicend.ai.defaults.tree.findWalkTarget
+import io.github.gaeqs.magicend.ai.defaults.tree.findRandomWalkTarget
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 
@@ -30,7 +30,7 @@ class Test {
                         }
                         wait(5)
                     }
-                    findWalkTarget(1.0f)
+                    findRandomWalkTarget(1.0f)
                     findNearestLivingEntities()
                     wait(20)
                 }

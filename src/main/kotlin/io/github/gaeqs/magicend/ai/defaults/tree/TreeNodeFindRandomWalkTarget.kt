@@ -46,5 +46,5 @@ class TreeNodeFindRandomWalkTarget(
     }
 }
 
-fun TreeNodeParentBuilder<*>.findWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) =
+fun TreeNodeParentBuilder<*>.findRandomWalkTarget(speed: Float, horizontalRadius: Int = 10, verticalRadius: Int = 7) =
     addChild(TreeNodeFindRandomWalkTarget.Builder(speed, horizontalRadius, verticalRadius))

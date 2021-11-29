@@ -2,10 +2,7 @@ package io.github.gaeqs.magicend.ai.defaults.tree
 
 import io.github.gaeqs.magicend.ai.memory.MemoryType
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
-import io.github.gaeqs.magicend.ai.tree.node.and
-import io.github.gaeqs.magicend.ai.tree.node.inverter
-import io.github.gaeqs.magicend.ai.tree.node.loopUntilFail
-import io.github.gaeqs.magicend.ai.tree.node.timed
+import io.github.gaeqs.magicend.ai.tree.node.*
 import net.minecraft.entity.LivingEntity
 import net.minecraft.util.dynamic.GlobalPos
 import kotlin.math.floor
@@ -57,7 +54,16 @@ fun TreeNodeParentBuilder<*>.walkToEntity(memory: MemoryType<out LivingEntity>, 
                 }
             }
         }
+        isAttackTargetValid(memory)
         isNearEntity(memory, minDistance)
     }
+}
 
+fun TreeNodeParentBuilder<*>.runAndWait(builder: TreeNodeSucceeder.Builder.() -> Unit) {
+    and {
+        succeeder {
+            builder()
+        }
+        wait(1)
+    }
 }
