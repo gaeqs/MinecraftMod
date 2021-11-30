@@ -93,6 +93,7 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
                                         0
                                     )
                                 )
+                                shamanKills = 0
                                 TreeNode.InvocationResult.SUCCESS
                             }
                         }
