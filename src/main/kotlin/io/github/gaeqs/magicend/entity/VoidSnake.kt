@@ -37,7 +37,7 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
     }
 
     private fun initAI() {
-        ai.activities += TreeActivity("", ai, rootLoopUnconditional {
+        ai.activities += TreeActivity("default", ai, rootLoopUnconditional {
             runAndWait {
                 or {
                     and {
