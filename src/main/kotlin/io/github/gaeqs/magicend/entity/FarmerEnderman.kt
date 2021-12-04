@@ -11,10 +11,10 @@ import io.github.gaeqs.magicend.ai.statemachine.node.lambda
 import io.github.gaeqs.magicend.ai.statemachine.node.tree
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
+import io.github.gaeqs.magicend.block.ChorusWheat
 import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.block.Blocks
-import net.minecraft.block.CropBlock
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
@@ -180,7 +180,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
                 val farmland = world.findPointOfInterest(entity.blockPos, PointOfInterestTypes.FARMLAND, 50) {
                     val state = world.getBlockState(it.up())
                     val block = state.block
-                    (state.isAir || crops < MAX_CROPS && block is CropBlock && block.isMature(state))
+                    (state.isAir || crops < MAX_CROPS && block is ChorusWheat && block.isMature(state))
                             && canReachBlock(it, 50)
                 }
 
@@ -240,7 +240,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
                         val block = state.block
 
                         if (state.isAir) {
-                            world.setBlockState(blockPos, Blocks.WHEAT.defaultState, 3)
+                            world.setBlockState(blockPos, ChorusWheat.BLOCK.defaultState, 3)
                             world.playSound(
                                 null,
                                 blockPos.x.toDouble(),
@@ -255,7 +255,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
                             return@tick TreeNode.InvocationResult.SUCCESS
                         }
 
-                        if (block is CropBlock && block.isMature(state)) {
+                        if (block is ChorusWheat && block.isMature(state)) {
                             world.breakBlock(blockPos, false, this@FarmerEnderman)
                             crops++
                             return@tick TreeNode.InvocationResult.SUCCESS

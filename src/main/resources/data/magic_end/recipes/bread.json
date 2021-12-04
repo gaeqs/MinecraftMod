@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "magic_end:chorus_wheat"
+    }
+  },
+  "result": {
+    "item": "magic_end:chorus_bread"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "magic_end:block/chorus_wheat_0"
+    },
+    "age=1": {
+      "model": "magic_end:block/chorus_wheat_0"
+    },
+    "age=2": {
+      "model": "magic_end:block/chorus_wheat_0"
+    },
+    "age=3": {
+      "model": "magic_end:block/chorus_wheat_1"
+    },
+    "age=4": {
+      "model": "magic_end:block/chorus_wheat_1"
+    },
+    "age=5": {
+      "model": "magic_end:block/chorus_wheat_1"
+    },
+    "age=6": {
+      "model": "magic_end:block/chorus_wheat_1"
+    },
+    "age=7": {
+      "model": "magic_end:block/chorus_wheat_2"
+    }
+  }
+}

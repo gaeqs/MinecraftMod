@@ -1,10 +1,10 @@
 package io.github.gaeqs.magicend
 
+/*import io.github.gaeqs.magicend.block.EndWindowBlock
+import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.block.*
 import io.github.gaeqs.magicend.entity.*
-/*import io.github.gaeqs.magicend.block.EndWindowBlock
-import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
@@ -52,6 +52,11 @@ object MinecraftMod : ModInitializer {
 
         Registry.register(Registry.BLOCK, EnderTable.IDENTIFIER, EnderTable.BLOCK)
         Registry.register(Registry.ITEM, EnderTable.IDENTIFIER, EnderTable.BLOCK_ITEM)
+
+        Registry.register(Registry.BLOCK, ChorusWheat.IDENTIFIER, ChorusWheat.BLOCK)
+        Registry.register(Registry.ITEM, ChorusWheat.IDENTIFIER, ChorusWheat.WHEAT_ITEM)
+        Registry.register(Registry.ITEM, ChorusWheat.SEEDS_IDENTIFIER, ChorusWheat.SEEDS_ITEM)
+        Registry.register(Registry.ITEM, ChorusWheat.BREAD_IDENTIFIER, ChorusWheat.BREAD_ITEM)
 
         registerEntities()
         PointOfInterestTypes.init()

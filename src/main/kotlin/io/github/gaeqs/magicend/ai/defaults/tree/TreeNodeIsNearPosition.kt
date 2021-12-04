@@ -17,7 +17,7 @@ class TreeNodeIsNearPosition(
 
     override fun tick(): InvocationResult {
         val position = ai.getMemory(memory) ?: return InvocationResult.FAIL
-        if (entity.blockPos.getSquaredDistance(position.pos) < 8.0) return InvocationResult.SUCCESS
+        if (entity.blockPos.getSquaredDistance(position.pos) < 4.0) return InvocationResult.SUCCESS
         return InvocationResult.FAIL
     }
 

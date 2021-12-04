@@ -45,7 +45,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         }
         walkTarget!!
 
-        if (walkTarget.lookTarget.blockPos.getSquaredDistance(lookTargetPos) > 4.0 && hasFinishedPath(walkTarget)) {
+        if (walkTarget.lookTarget.blockPos.getSquaredDistance(lookTargetPos) > 3.0 && hasFinishedPath(walkTarget)) {
             lookTargetPos = walkTarget.lookTarget.blockPos
             entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
         }
