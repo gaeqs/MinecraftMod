@@ -65,6 +65,11 @@ class StateMachineNodeTree(
             this.onSuccess = onSuccess
         }
 
+        fun anyResult (onAny : StateMachineNodeTree.() -> Unit) {
+            this.onFail = onAny
+            this.onSuccess = onAny
+        }
+
     }
 }
 

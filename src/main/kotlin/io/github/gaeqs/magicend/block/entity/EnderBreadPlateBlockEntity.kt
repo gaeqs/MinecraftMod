@@ -21,6 +21,8 @@ class EnderBreadPlateBlockEntity : BlockEntity(EnderBreadPlateBlock.BLOCK_ENTITY
 
     fun isFull() = _amount >= 9
 
+    fun isEmpty() = _amount == 0
+
     override fun writeNbt(nbt: NbtCompound) = super.writeNbt(nbt).apply { putInt("amount", _amount) }
 
     override fun fromTag(state: BlockState, tag: NbtCompound) {

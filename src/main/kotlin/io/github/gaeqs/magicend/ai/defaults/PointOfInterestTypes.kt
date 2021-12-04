@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.block.DragonStatueBlock
 import io.github.gaeqs.magicend.block.EnderBreadPlateBlock
+import io.github.gaeqs.magicend.block.EnderTable
 import net.fabricmc.fabric.mixin.`object`.builder.PointOfInterestTypeAccessor
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -22,6 +23,22 @@ object PointOfInterestTypes {
         Identifier(MinecraftMod.MOD_ID, "ender_bread_plate"),
         getAllStatesOf(EnderBreadPlateBlock.BLOCK), 32, 100
     )
+
+    val ENDER_TABLE = register(
+        Identifier(MinecraftMod.MOD_ID, "ender_table"),
+        getAllStatesOf(EnderTable.BLOCK), 32, 100
+    )
+
+    val FARMLAND = register(
+        Identifier(MinecraftMod.MOD_ID, "farmland"),
+        getAllStatesOf(Registry.BLOCK.get(Identifier("minecraft", "farmland"))),
+        32, 100
+    )
+
+    fun init() {
+        // Blank initialization function.
+        // This function inits all the static data.
+    }
 
     fun register(
         id: Identifier,

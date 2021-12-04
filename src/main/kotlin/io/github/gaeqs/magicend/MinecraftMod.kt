@@ -1,5 +1,6 @@
 package io.github.gaeqs.magicend
 
+import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.block.*
 import io.github.gaeqs.magicend.entity.*
 /*import io.github.gaeqs.magicend.block.EndWindowBlock
@@ -49,7 +50,11 @@ object MinecraftMod : ModInitializer {
             EnderBreadPlateBlock.BLOCK_ENTITY
         )
 
+        Registry.register(Registry.BLOCK, EnderTable.IDENTIFIER, EnderTable.BLOCK)
+        Registry.register(Registry.ITEM, EnderTable.IDENTIFIER, EnderTable.BLOCK_ITEM)
+
         registerEntities()
+        PointOfInterestTypes.init()
     }
 
 

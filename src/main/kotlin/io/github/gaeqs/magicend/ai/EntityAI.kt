@@ -8,6 +8,7 @@ class EntityAI(val entity: LivingEntity) {
 
     var coreActivity: Activity? = null
     val activities = mutableSetOf<Activity>()
+    private val tickingActivities = arrayListOf<Activity>()
 
     var tick = 0L
         private set
@@ -30,7 +31,9 @@ class EntityAI(val entity: LivingEntity) {
             coreActivity = null
         }
 
-        activities.forEach { it.tick() }
+        tickingActivities.clear()
+        tickingActivities.addAll(activities)
+        tickingActivities.forEach { it.tick() }
         activities.removeIf { it.finished }
     }
 
