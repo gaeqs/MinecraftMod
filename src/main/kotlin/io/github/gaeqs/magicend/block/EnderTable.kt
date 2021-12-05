@@ -18,7 +18,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import java.util.*
 
-class EnderTable : Block(FabricBlockSettings.of(Material.STONE).strength(2.0f)) {
+class EnderTable : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().strength(2.0f)) {
 
 
     companion object {
