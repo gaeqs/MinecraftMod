@@ -3,13 +3,9 @@ package io.github.gaeqs.magicend.entity
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
-import io.github.gaeqs.magicend.ai.defaults.tree.findPointOfInterest
-import io.github.gaeqs.magicend.ai.defaults.tree.walkToPosition
-import io.github.gaeqs.magicend.ai.tree.TreeActivity
-import io.github.gaeqs.magicend.ai.tree.node.and
-import io.github.gaeqs.magicend.ai.tree.node.or
-import io.github.gaeqs.magicend.ai.tree.node.rootLoopUnconditional
-import io.github.gaeqs.magicend.ai.tree.node.wait
+import io.github.gaeqs.magicend.ai.defaults.tree.*
+import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
+import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
@@ -17,7 +13,10 @@ import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.particle.ParticleTypes
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : EnderVillager(type, world) {
@@ -36,11 +35,6 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
 
     var sacrifices: Int = 0
 
-    init {
-        initAI()
-    }
-
-
     override fun readCustomDataFromNbt(nbt: NbtCompound) {
         super.readCustomDataFromNbt(nbt)
         sacrifices = nbt.getInt("sacrifices")
@@ -51,21 +45,42 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
         nbt.putInt("sacrifices", sacrifices)
     }
 
-    private fun initAI() {
-        ai.activities += TreeActivity("idle", ai,
-            rootLoopUnconditional {
-                or {
-                    and {
-                        findPointOfInterest(PointOfInterestTypes.DRAGON_STATUE, MemoryTypes.POINT_OF_INTEREST, 48)
-                        walkToPosition(MemoryTypes.POINT_OF_INTEREST, 2.0f)
-                        // Position reached successfully. Waiting.
-                        wait(50)
-                    }
-                    // Walk failed! Just in case skip a tick.
-                    wait(1)
+    override fun TreeNodeParentBuilder<*>.initWorkAI() {
+
+        // SACRIFICES
+        and {
+            predicate { sacrifices >= 5 }
+            findPointOfInterest(PointOfInterestTypes.DRAGON_STATUE, MemoryTypes.POINT_OF_INTEREST, 64)
+            walkToPosition(MemoryTypes.POINT_OF_INTEREST, 1.5f)
+            wait(50)
+            isNearPosition(MemoryTypes.POINT_OF_INTEREST)
+            predicate { sacrifices >= 5 }
+            lambda {
+                tick {
+                    val pos = ai.getMemory(MemoryTypes.POINT_OF_INTEREST) ?: return@tick TreeNode.InvocationResult.FAIL
+                    val p = Vec3d.ofCenter(pos.pos)
+
+                    sacrifices -= 5
+                    (world as ServerWorld).spawnParticles(
+                        ParticleTypes.FLAME, p.x, p.y, p.z,
+                        20, 1.0, 1.0, 1.0, 0.0
+                    )
+
+                    TreeNode.InvocationResult.SUCCESS
                 }
             }
-        )
-    }
+        }
 
+        and {
+            succeeder {
+                and {
+                    findRandomWalkTarget(1.5f)
+                    timed(60, 100) {
+                        walkToTarget()
+                    }
+                }
+            }
+            wait(20)
+        }
+    }
 }

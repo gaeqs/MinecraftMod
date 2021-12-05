@@ -43,7 +43,7 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
                     and {
                         findNearestLivingEntities()
                         findAttackTargetIfNotFound { it is EnderVillager }
-                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 2.0f)
+                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
                         succeeder {
                             attack()
                         }

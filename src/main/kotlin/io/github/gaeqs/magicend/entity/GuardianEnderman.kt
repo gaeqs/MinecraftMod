@@ -62,25 +62,25 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
 
     private fun initAI() {
 
-        ai.activities += TreeActivity("idle", ai, rootLoopUnconditional {
-            or {
-                and {
-                    succeeder {
-                        and {
-                            predicate { ai.getMemory(MemoryTypes.ATTACK_TARGET)?.isAlive != true }
-                            findNearestLivingEntities()
-                            findAttackTarget { it is VoidSnake || it is VoidWorm || it is VoidSquid }
-                        }
-                    }
-                    walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 2.0f)
-                    succeeder {
-                        attack()
-                    }
-                    wait(1)
-                }
-                wait(10)
-            }
-        })
+       //ai.activities += TreeActivity("idle", ai, rootLoopUnconditional {
+       //    or {
+       //        and {
+       //            succeeder {
+       //                and {
+       //                    predicate { ai.getMemory(MemoryTypes.ATTACK_TARGET)?.isAlive != true }
+       //                    findNearestLivingEntities()
+       //                    findAttackTarget { it is VoidSnake || it is VoidWorm || it is VoidSquid }
+       //                }
+       //            }
+       //            walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
+       //            succeeder {
+       //                attack()
+       //            }
+       //            wait(1)
+       //        }
+       //        wait(10)
+       //    }
+       //})
 
     }
 }

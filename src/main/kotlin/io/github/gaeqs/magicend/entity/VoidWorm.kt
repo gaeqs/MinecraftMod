@@ -67,7 +67,7 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
                     and {
                         findNearestLivingEntities()
                         findAttackTargetIfNotFound { it is EnderVillager }
-                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 2.0f)
+                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
                         succeeder {
                             attack()
                         }

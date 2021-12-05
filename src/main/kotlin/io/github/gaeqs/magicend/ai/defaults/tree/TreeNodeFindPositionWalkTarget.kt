@@ -16,8 +16,6 @@ class TreeNodeFindPositionWalkTarget(
     activity: Activity,
     val memory: MemoryType<GlobalPos>,
     val speed: Float,
-    val horizontalRadius: Int,
-    val verticalRadius: Int
 ) : TreeNode(activity) {
 
     override fun start() {
@@ -48,11 +46,9 @@ class TreeNodeFindPositionWalkTarget(
     class Builder(
         var memory: MemoryType<GlobalPos>,
         var speed: Float,
-        var horizontalRadius: Int,
-        var verticalRadius: Int
     ) : TreeNodeBuilder<TreeNodeFindPositionWalkTarget> {
         override fun build(activity: Activity) =
-            TreeNodeFindPositionWalkTarget(activity, memory, speed, horizontalRadius, verticalRadius)
+            TreeNodeFindPositionWalkTarget(activity, memory, speed)
     }
 
     override fun stop() {
@@ -63,7 +59,4 @@ class TreeNodeFindPositionWalkTarget(
 fun TreeNodeParentBuilder<*>.findPositionWalkTarget(
     memory: MemoryType<GlobalPos>,
     speed: Float,
-    horizontalRadius: Int = 15,
-    verticalRadius: Int = 7
-) =
-    addChild(TreeNodeFindPositionWalkTarget.Builder(memory, speed, horizontalRadius, verticalRadius))
+) = addChild(TreeNodeFindPositionWalkTarget.Builder(memory, speed))
