@@ -1,6 +1,7 @@
 package io.github.gaeqs.magicend.ai.defaults.memory
 
 import io.github.gaeqs.magicend.ai.memory.MemoryType
+import io.github.gaeqs.magicend.entity.EnderVillager
 import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.ai.brain.WalkTarget
@@ -18,5 +19,7 @@ object MemoryTypes {
     val NEARBY_ITEM_ENTITIES = MemoryType<List<ItemEntity>>("nearby_item_entities")
     val VISIBLE_NEARBY_ITEM_ENTITIES = MemoryType<List<ItemEntity>>("visible_nearby_item_entities")
     val TARGET_ITEM = MemoryType<ItemEntity>("target_item")
+
+    val HELPING_VILLAGER = MemoryType<EnderVillager>("helping_villager")
 
 }

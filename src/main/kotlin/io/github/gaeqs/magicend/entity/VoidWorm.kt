@@ -30,7 +30,7 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
             return createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
         }
     }

@@ -36,7 +36,7 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
             return createMobAttributes()
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.6000000238418579)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6.0)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
         }
     }

@@ -27,7 +27,7 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
             return createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 30.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
         }
     }

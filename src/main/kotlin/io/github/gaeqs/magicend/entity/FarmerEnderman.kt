@@ -38,7 +38,9 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
         val MAX_CROPS = 6
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
-            return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+            return createMobAttributes()
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 40.0)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
         }
     }
 

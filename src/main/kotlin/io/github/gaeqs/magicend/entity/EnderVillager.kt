@@ -19,7 +19,8 @@ open class EnderVillager(
     world: World
 ) : AIEntity(type, world) {
 
-    private var status = EnderVillagerStatus.NORMAL
+    var status = EnderVillagerStatus.NORMAL
+        private set
 
     var village: EndVillage
         private set
@@ -29,7 +30,7 @@ open class EnderVillager(
         initAI()
     }
 
-    protected fun changeStatus(status: EnderVillagerStatus) {
+    protected open fun changeStatus(status: EnderVillagerStatus) {
         if (status == this.status) return
         this.status = status
         val values = EnderVillagerStatus.values().map { it.activityName }
@@ -73,7 +74,7 @@ open class EnderVillager(
                         val entity = world.getBlockEntity(it)
                         entity is EnderBreadPlateBlockEntity && !entity.isEmpty()
                     }
-                    walkToPosition(MemoryTypes.POINT_OF_INTEREST, 2.0f)
+                    walkToPosition(MemoryTypes.POINT_OF_INTEREST, 1.5f)
                     // Position reached successfully. Waiting.
                     wait(50)
                     isNearPosition(MemoryTypes.POINT_OF_INTEREST)
@@ -104,6 +105,11 @@ open class EnderVillager(
         wait(10)
     }
 
+    override fun remove() {
+        super.remove()
+        village.refresh()
+    }
+
     override fun tickMovement() {
         if (world.isClient) {
             repeat(2) {
@@ -118,7 +124,7 @@ open class EnderVillager(
                 )
             }
         }
-        if (random.nextDouble() > 0.99) {
+        if (village.villagers.size == 1 && random.nextDouble() > 0.8 || random.nextDouble() > 0.99) {
             searchBiggerVillages()
         }
 
@@ -128,7 +134,7 @@ open class EnderVillager(
     private fun searchBiggerVillages() {
         val box = boundingBox.expand(64.0, 32.0, 64.0)
         val other = world.getEntitiesByClass(EnderVillager::class.java, box) {
-            it != this && it.isAlive && it.village != village && it.village.villagers.size > village.villagers.size
+            it != this && it.isAlive && it.village != village && it.village.villagers.size >= village.villagers.size
         }.maxByOrNull { it.village.villagers.size } ?: return
 
         village.remove(this)

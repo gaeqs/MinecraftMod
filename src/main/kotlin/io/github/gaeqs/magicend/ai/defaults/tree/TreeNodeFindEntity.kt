@@ -9,7 +9,7 @@ import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 
-class TreeNodeFindAttackTarget<T : Entity>(
+class TreeNodeFindEntity<T : Entity>(
     activity: Activity,
     val list: MemoryType<out Collection<T>>,
     val saveOn: MemoryType<in T>,
@@ -42,8 +42,8 @@ class TreeNodeFindAttackTarget<T : Entity>(
         var list: MemoryType<out Collection<T>>,
         var saveOn: MemoryType<in T>,
         var condition: (T) -> Boolean
-    ) : TreeNodeBuilder<TreeNodeFindAttackTarget<T>> {
-        override fun build(activity: Activity) = TreeNodeFindAttackTarget(activity, list, saveOn, condition)
+    ) : TreeNodeBuilder<TreeNodeFindEntity<T>> {
+        override fun build(activity: Activity) = TreeNodeFindEntity(activity, list, saveOn, condition)
     }
 }
 
@@ -51,7 +51,7 @@ fun <T : Entity> TreeNodeParentBuilder<*>.findEntity(
     list: MemoryType<out Collection<T>>,
     saveOn: MemoryType<in T>,
     condition: (T) -> Boolean
-) = addChild(TreeNodeFindAttackTarget.Builder(list, saveOn, condition))
+) = addChild(TreeNodeFindEntity.Builder(list, saveOn, condition))
 
 fun TreeNodeParentBuilder<*>.findEntity(condition: (LivingEntity) -> Boolean) {
     findEntity(MemoryTypes.VISIBLE_NEARBY_LIVING_ENTITIES, MemoryTypes.ATTACK_TARGET, condition)

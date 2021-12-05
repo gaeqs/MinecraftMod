@@ -31,7 +31,9 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
-            return createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+            return createMobAttributes()
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50.0)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
         }
     }
 

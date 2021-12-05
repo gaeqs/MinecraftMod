@@ -1,9 +1,11 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
+import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
+import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
@@ -29,11 +31,14 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 80.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5)
         }
     }
 
+    var patrolling = false
+    var lastTimePatrolling: Long = 0
     var kills: Int = 0
 
     override fun readCustomDataFromNbt(nbt: NbtCompound) {
@@ -71,5 +76,50 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
                 wait(10)
             }
         })
+    }
+
+    override fun TreeNodeParentBuilder<*>.initWorkAI() {
+
+        // Check if anybody needs help
+        and {
+            findEnderVillager(MemoryTypes.HELPING_VILLAGER) { it.status == EnderVillagerStatus.RUNNING_AWAY }
+            walkToEntity(MemoryTypes.HELPING_VILLAGER, 2.5f, 5.0f, 32.0f)
+            wait(1)
+        }
+
+        and {
+            predicate { patrolling }
+            predicate { kills > 5 && village.guardians.any { it != this@GuardianEnderman } }
+            lambda {
+                tick {
+                    // End patrolling
+                    kills = 0
+                    patrolling = false
+                    lastTimePatrolling = System.currentTimeMillis()
+                    village.callToPatrol()
+
+                    // This fail assures the next ands will be called.
+                    TreeNode.InvocationResult.FAIL
+                }
+            }
+        }
+
+        and {
+            predicate { patrolling }
+            findRandomWalkTarget(1.5f)
+            timed(60, 100) {
+                walkToTarget()
+            }
+            wait(5)
+        }
+
+        and {
+            predicate { !patrolling }
+            findPointOfInterest(PointOfInterestTypes.ENDER_TABLE, MemoryTypes.POINT_OF_INTEREST, 64)
+            walkToPosition(MemoryTypes.POINT_OF_INTEREST, 1.5f)
+            wait(20)
+        }
+
+        wait(20)
     }
 }
