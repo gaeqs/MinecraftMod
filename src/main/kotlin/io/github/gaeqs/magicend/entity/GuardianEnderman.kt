@@ -1,6 +1,10 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
+import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
+import io.github.gaeqs.magicend.ai.defaults.tree.*
+import io.github.gaeqs.magicend.ai.tree.TreeActivity
+import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
@@ -32,10 +36,6 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
 
     var kills: Int = 0
 
-    init {
-        initAI()
-    }
-
     override fun readCustomDataFromNbt(nbt: NbtCompound) {
         super.readCustomDataFromNbt(nbt)
         kills = nbt.getInt("kills")
@@ -52,28 +52,24 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         kills++
     }
 
-
-    private fun initAI() {
-
-       //ai.activities += TreeActivity("idle", ai, rootLoopUnconditional {
-       //    or {
-       //        and {
-       //            succeeder {
-       //                and {
-       //                    predicate { ai.getMemory(MemoryTypes.ATTACK_TARGET)?.isAlive != true }
-       //                    findNearestLivingEntities()
-       //                    findAttackTarget { it is VoidSnake || it is VoidWorm || it is VoidSquid }
-       //                }
-       //            }
-       //            walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
-       //            succeeder {
-       //                attack()
-       //            }
-       //            wait(1)
-       //        }
-       //        wait(10)
-       //    }
-       //})
-
+    override fun addRunAwayActivity() {
+        ai.activities += TreeActivity(EnderVillagerStatus.RUNNING_AWAY.activityName, ai, rootLoopUnconditional {
+            or {
+                and {
+                    succeeder {
+                        findAttackTargetIfNotFound(32.0f)
+                        { it is VoidSnake || it is VoidWorm || it is VoidSquid }
+                    }
+                    walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
+                    isEntityTargetValid(MemoryTypes.ATTACK_TARGET, 32.0f)
+                    isNearEntity(MemoryTypes.ATTACK_TARGET, 1.5f)
+                    succeeder {
+                        attack()
+                    }
+                    wait(1)
+                }
+                wait(10)
+            }
+        })
     }
 }
