@@ -2,6 +2,7 @@ package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
+import io.github.gaeqs.magicend.ai.defaults.canNavigateToEntity
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
@@ -12,6 +13,7 @@ import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
@@ -66,6 +68,28 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
                         20, 1.0, 1.0, 1.0, 0.0
                     )
 
+                    TreeNode.InvocationResult.SUCCESS
+                }
+            }
+        }
+
+        and {
+            findNearestItemEntities(48.0)
+            findEntityIfNotFound(
+                MemoryTypes.NEARBY_ITEM_ENTITIES,
+                MemoryTypes.TARGET_ITEM,
+                48.0f
+            ) { it.stack.item == Items.ITEM_FRAME && canNavigateToEntity(it) }
+
+            debug { it.getMemory(MemoryTypes.TARGET_ITEM)?.pos.toString() }
+            walkToEntity(MemoryTypes.TARGET_ITEM, 1.5f, 1.0f, 48.0f)
+            isEntityTargetValid(MemoryTypes.TARGET_ITEM, 48.0f)
+            isNearEntity(MemoryTypes.TARGET_ITEM, 1.5f)
+            lambda {
+                tick {
+                    val item = ai.getMemory(MemoryTypes.TARGET_ITEM) ?: return@tick TreeNode.InvocationResult.FAIL
+                    sacrifices += item.stack.count
+                    ai.getMemory(MemoryTypes.TARGET_ITEM)?.remove()
                     TreeNode.InvocationResult.SUCCESS
                 }
             }

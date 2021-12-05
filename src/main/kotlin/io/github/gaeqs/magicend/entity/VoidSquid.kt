@@ -101,16 +101,16 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
 
                     and {
                         findNearestLivingEntities()
-                        findAttackTargetIfNotFound { it is ShamanEnderman }
-                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
+                        findAttackTargetIfNotFound(32.0f) { it is ShamanEnderman }
+                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
                         succeeder {
                             attack()
                         }
                     }
 
                     and {
-                        findAttackTargetIfNotFound { it is EnderVillager }
-                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f)
+                        findAttackTargetIfNotFound(32.0f) { it is EnderVillager }
+                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
                         succeeder {
                             attack()
                         }

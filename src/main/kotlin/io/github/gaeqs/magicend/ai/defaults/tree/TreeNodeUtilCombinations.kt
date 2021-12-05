@@ -4,6 +4,7 @@ import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.memory.MemoryType
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
+import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.util.dynamic.GlobalPos
 import kotlin.math.floor
@@ -34,18 +35,23 @@ fun TreeNodeParentBuilder<*>.walkToPosition(memory: MemoryType<GlobalPos>, speed
 
 }
 
-fun TreeNodeParentBuilder<*>.walkToEntity(memory: MemoryType<out LivingEntity>, speed: Float, minDistance: Float) {
+fun TreeNodeParentBuilder<*>.walkToEntity(
+    memory: MemoryType<out Entity>,
+    speed: Float,
+    minDistance: Float,
+    distance: Float
+) {
     and {
         loopUntilFail {
             and {
                 // If it's already in the position, return
-                isAttackTargetValid(memory)
+                isEntityTargetValid(memory, distance)
                 inverter {
                     isNearEntity(memory, minDistance)
                 }
 
                 // Find the path.
-                findEntityWalkTarget(memory, speed, floor(minDistance).toInt())
+                findEntityWalkTarget(memory, speed, 0)
 
                 // We need the timer because the walk target pathfinder works like sh** and needs to reload.
                 // Thx Minecraft. :)
@@ -55,7 +61,7 @@ fun TreeNodeParentBuilder<*>.walkToEntity(memory: MemoryType<out LivingEntity>, 
                 }
             }
         }
-        isAttackTargetValid(memory)
+        isEntityTargetValid(memory, distance)
         isNearEntity(memory, minDistance)
     }
 }
@@ -69,16 +75,35 @@ fun TreeNodeParentBuilder<*>.runAndWait(builder: TreeNodeSucceeder.Builder.() ->
     }
 }
 
-fun TreeNodeParentBuilder<*>.findAttackTargetIfNotFound(condition: (LivingEntity) -> Boolean) {
+fun <T : Entity> TreeNodeParentBuilder<*>.findEntityIfNotFound(
+    list: MemoryType<out Collection<T>>,
+    saveOn: MemoryType<T>,
+    distance: Float,
+    condition: (T) -> Boolean
+) {
     and {
         succeeder {
             and {
                 inverter {
-                    isAttackTargetValid(MemoryTypes.ATTACK_TARGET)
+                    isEntityTargetValid(saveOn, distance)
                 }
-                findAttackTarget(condition)
+                findEntity(list, saveOn, condition)
             }
         }
-        isAttackTargetValid(MemoryTypes.ATTACK_TARGET)
+        isEntityTargetValid(saveOn, distance)
+    }
+}
+
+fun TreeNodeParentBuilder<*>.findAttackTargetIfNotFound(distance: Float, condition: (LivingEntity) -> Boolean) {
+    and {
+        succeeder {
+            and {
+                inverter {
+                    isEntityTargetValid(MemoryTypes.ATTACK_TARGET, distance)
+                }
+                findEntity(condition)
+            }
+        }
+        isEntityTargetValid(MemoryTypes.ATTACK_TARGET, distance)
     }
 }

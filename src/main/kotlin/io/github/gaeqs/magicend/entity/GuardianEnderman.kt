@@ -1,13 +1,6 @@
 package io.github.gaeqs.magicend.entity
 
 import io.github.gaeqs.magicend.MinecraftMod
-import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
-import io.github.gaeqs.magicend.ai.defaults.tree.attack
-import io.github.gaeqs.magicend.ai.defaults.tree.findAttackTarget
-import io.github.gaeqs.magicend.ai.defaults.tree.findNearestLivingEntities
-import io.github.gaeqs.magicend.ai.defaults.tree.walkToEntity
-import io.github.gaeqs.magicend.ai.tree.TreeActivity
-import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType

@@ -16,7 +16,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
 
     private var path: Path? = null
     private var lookTargetPos: BlockPos? = null
-    private var initFailed = true;
+    private var initFailed = true
 
     override fun start() {
         path = null
@@ -28,7 +28,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
 
         val walkTarget = ai.getMemory(MemoryTypes.WALK_TARGET)
         if (walkTarget == null || hasReached(walkTarget)) return
-        if (!hasFinishedPath(walkTarget)) return
+        if (!generateNewPath(walkTarget)) return
 
         initFailed = false
         entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
@@ -45,7 +45,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         }
         walkTarget!!
 
-        if (walkTarget.lookTarget.blockPos.getSquaredDistance(lookTargetPos) > 3.0 && hasFinishedPath(walkTarget)) {
+        if (walkTarget.lookTarget.blockPos.getSquaredDistance(lookTargetPos) > 3.0 && generateNewPath(walkTarget)) {
             lookTargetPos = walkTarget.lookTarget.blockPos
             entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
         }
@@ -66,7 +66,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     private fun hasReached(target: WalkTarget) =
         target.lookTarget.blockPos.getManhattanDistance(activity.ai.entity.blockPos) <= target.completionRange
 
-    private fun hasFinishedPath(walkTarget: WalkTarget): Boolean {
+    private fun generateNewPath(walkTarget: WalkTarget): Boolean {
         val entity = activity.ai.entity as PathAwareEntity
         val blockPos = walkTarget.lookTarget.blockPos
         var path = entity.navigation.findPathTo(blockPos, 0)
@@ -81,9 +81,9 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
             }
         }
 
+        this.path = path
         if (path == null) return false
 
-        this.path = path
         this.lookTargetPos = walkTarget.lookTarget.blockPos
         return true
     }

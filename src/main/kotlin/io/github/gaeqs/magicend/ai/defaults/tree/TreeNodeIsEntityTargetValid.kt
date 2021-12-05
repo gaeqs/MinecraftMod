@@ -1,14 +1,15 @@
 package io.github.gaeqs.magicend.ai.defaults.tree
 
 import io.github.gaeqs.magicend.ai.Activity
-import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.memory.MemoryType
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
+import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 
-class TreeNodeIsAttackTargetValid(activity: Activity, val memory: MemoryType<out LivingEntity>) : TreeNode(activity) {
+class TreeNodeIsTargetEntityValid(activity: Activity, val memory: MemoryType<out Entity>, val distanceSq: Float) :
+    TreeNode(activity) {
 
     override fun start() {
     }
@@ -16,7 +17,7 @@ class TreeNodeIsAttackTargetValid(activity: Activity, val memory: MemoryType<out
     override fun tick(): InvocationResult {
         val memory = ai.getMemory(memory) ?: return InvocationResult.FAIL
 
-        if (memory.isDead || memory.squaredDistanceTo(entity) > 32 * 32
+        if (memory.removed || (memory is LivingEntity && memory.isDead) || memory.squaredDistanceTo(entity) > distanceSq
             || memory.world.registryKey != entity.world.registryKey
         ) {
             return InvocationResult.FAIL
@@ -29,11 +30,12 @@ class TreeNodeIsAttackTargetValid(activity: Activity, val memory: MemoryType<out
     }
 
 
-    class Builder(var memory: MemoryType<out LivingEntity>) : TreeNodeBuilder<TreeNodeIsAttackTargetValid> {
-        override fun build(activity: Activity) = TreeNodeIsAttackTargetValid(activity, memory)
+    class Builder(var memory: MemoryType<out Entity>, var distance: Float) :
+        TreeNodeBuilder<TreeNodeIsTargetEntityValid> {
+        override fun build(activity: Activity) = TreeNodeIsTargetEntityValid(activity, memory, distance * distance)
     }
 }
 
-fun TreeNodeParentBuilder<*>.isAttackTargetValid(
-    memory: MemoryType<out LivingEntity>
-) = addChild(TreeNodeIsAttackTargetValid.Builder(memory))
+fun TreeNodeParentBuilder<*>.isEntityTargetValid(
+    memory: MemoryType<out Entity>, distance: Float
+) = addChild(TreeNodeIsTargetEntityValid.Builder(memory, distance))
