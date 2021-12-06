@@ -19,7 +19,7 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
-class EnderBreadPlateBlock : Block(FabricBlockSettings.of(Material.STONE).strength(2.0f)), BlockEntityProvider {
+class EnderBreadPlateBlock : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().strength(2.0f)), BlockEntityProvider {
 
 
     companion object {
@@ -33,7 +33,7 @@ class EnderBreadPlateBlock : Block(FabricBlockSettings.of(Material.STONE).streng
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext)
             : VoxelShape {
-        return VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 0.7, 1.0)
+        return VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 7.0 / 16.0, 1.0)
     }
 
 }

@@ -34,7 +34,7 @@ class EnderBreadPlateBlockEntityRenderer(dispatcher: BlockEntityRenderDispatcher
             val x = it % 3
             val y = it / 3
 
-            matrices.translate(0.2 + x * 0.3, 0.7, 0.3 + y * 0.3)
+            matrices.translate(0.2 + x * 0.3, 7.0 / 16.0, 0.3 + y * 0.3)
             matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(10.0f))
             matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(80.0f))
 
