@@ -62,14 +62,8 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
             lambda {
                 tick {
                     val pos = ai.getMemory(MemoryTypes.POINT_OF_INTEREST) ?: return@tick TreeNode.InvocationResult.FAIL
-                    val p = Vec3d.ofCenter(pos.pos)
-
                     sacrifices -= 5
-                    (world as ServerWorld).spawnParticles(
-                        ParticleTypes.FLAME, p.x, p.y, p.z,
-                        20, 1.0, 1.0, 1.0, 0.0
-                    )
-
+                    village.executeRitual(this@ShamanEnderman, pos.pos)
                     TreeNode.InvocationResult.SUCCESS
                 }
             }
