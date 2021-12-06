@@ -136,7 +136,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
         and {
             succeeder {
                 and {
-                    findRandomWalkTarget(1.5f)
+                    findRandomWalkTargetToPoint(1.5f, PointOfInterestTypes.ENDER_TABLE)
                     timed(60, 100) {
                         walkToTarget()
                     }

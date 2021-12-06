@@ -32,8 +32,5 @@ fun MobEntity.canReachBlock(pos: BlockPos, searchDistance: Int): Boolean {
 
 fun PathAwareEntity.canNavigateToEntity(entity: Entity): Boolean {
     val path = navigation.findPathTo(entity, 0) ?: return false
-    val pathNode = path.end ?: return false
-    val i = pathNode.x - MathHelper.floor(entity.x)
-    val j = pathNode.z - MathHelper.floor(entity.z)
-    return (i * i + j * j).toDouble() <= 2.25
+    return path.end != null
 }

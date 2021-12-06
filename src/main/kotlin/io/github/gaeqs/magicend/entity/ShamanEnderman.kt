@@ -77,6 +77,8 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
                 48.0f
             ) { it.stack.item == Items.ITEM_FRAME && canNavigateToEntity(it) }
 
+            debug { it.getMemory(MemoryTypes.TARGET_ITEM).toString() }
+
             walkToEntity(MemoryTypes.TARGET_ITEM, 1.5f, 1.0f, 48.0f)
             isEntityTargetValid(MemoryTypes.TARGET_ITEM, 48.0f)
             isNearEntity(MemoryTypes.TARGET_ITEM, 1.5f)
@@ -93,7 +95,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
         and {
             succeeder {
                 and {
-                    findRandomWalkTarget(1.5f)
+                    findRandomWalkTargetToPoint(1.5f, PointOfInterestTypes.DRAGON_STATUE)
                     timed(60, 100) {
                         walkToTarget()
                     }

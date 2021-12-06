@@ -106,7 +106,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
 
         and {
             predicate { patrolling }
-            findRandomWalkTarget(1.5f)
+            findRandomWalkTargetToPoint(1.5f, PointOfInterestTypes.ENDER_TABLE, 50.0)
             timed(60, 100) {
                 walkToTarget()
             }
