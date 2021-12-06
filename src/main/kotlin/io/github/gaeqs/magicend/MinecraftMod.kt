@@ -101,5 +101,12 @@ object MinecraftMod : ModInitializer {
             VoidSquid.ENTITY_TYPE,
             VoidSquid.createExampleEntityAttributes()
         )
+
+        Registry.register(Registry.ITEM, ShamanEnderman.EGG_ITEM_IDENTIFIER, ShamanEnderman.EGG_ITEM)
+        Registry.register(Registry.ITEM, GuardianEnderman.EGG_ITEM_IDENTIFIER, GuardianEnderman.EGG_ITEM)
+        Registry.register(Registry.ITEM, FarmerEnderman.EGG_ITEM_IDENTIFIER, FarmerEnderman.EGG_ITEM)
+        Registry.register(Registry.ITEM, VoidWorm.EGG_ITEM_IDENTIFIER, VoidWorm.EGG_ITEM)
+        Registry.register(Registry.ITEM, VoidSnake.EGG_ITEM_IDENTIFIER, VoidSnake.EGG_ITEM)
+        Registry.register(Registry.ITEM, VoidSquid.EGG_ITEM_IDENTIFIER, VoidSquid.EGG_ITEM)
     }
 }

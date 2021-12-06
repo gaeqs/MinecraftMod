@@ -6,6 +6,7 @@ import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
@@ -17,6 +18,8 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
@@ -31,6 +34,12 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<VoidSquid> { type, world -> VoidSquid(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 2.0f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_squid_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0xf2d3eb, 0xb37da7,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()

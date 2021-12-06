@@ -6,11 +6,14 @@ import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.util.Identifier
 import net.minecraft.world.World
 
@@ -22,6 +25,12 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<VoidSnake> { type, world -> VoidSnake(type, world) }
         ).dimensions(EntityDimensions.fixed(1.5f, 0.8f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_snake_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0x946794, 0x140054,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()

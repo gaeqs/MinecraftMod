@@ -8,17 +8,17 @@ import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.item.ItemGroup
 import net.minecraft.item.Items
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.particle.ParticleTypes
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
 
 class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : EnderVillager(type, world) {
@@ -29,6 +29,12 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<ShamanEnderman> { type, world -> ShamanEnderman(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "shaman_enderman_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0x161616, 0x5e005a,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()
@@ -76,8 +82,6 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
                 MemoryTypes.TARGET_ITEM,
                 48.0f
             ) { it.stack.item == Items.ITEM_FRAME && canNavigateToEntity(it) }
-
-            debug { it.getMemory(MemoryTypes.TARGET_ITEM).toString() }
 
             walkToEntity(MemoryTypes.TARGET_ITEM, 1.5f, 1.0f, 48.0f)
             isEntityTargetValid(MemoryTypes.TARGET_ITEM, 48.0f)

@@ -6,12 +6,15 @@ import io.github.gaeqs.magicend.ai.defaults.tree.*
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
@@ -25,6 +28,12 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<VoidWorm> { type, world -> VoidWorm(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 0.8f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_worm_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0x946794, 0xb93ec9,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()

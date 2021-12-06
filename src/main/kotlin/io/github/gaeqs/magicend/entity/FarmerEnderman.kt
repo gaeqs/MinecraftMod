@@ -14,11 +14,14 @@ import io.github.gaeqs.magicend.ai.tree.node.*
 import io.github.gaeqs.magicend.block.ChorusWheat
 import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
@@ -34,6 +37,12 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<FarmerEnderman> { type, world -> FarmerEnderman(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "farmer_enderman_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0x161616,0x00800d,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         val MAX_CROPS = 6
 

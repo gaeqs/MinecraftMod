@@ -8,12 +8,16 @@ import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
@@ -27,6 +31,12 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<GuardianEnderman> { type, world -> GuardianEnderman(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+
+        val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "guardian_enderman_spawn_egg")
+        val EGG_ITEM = SpawnEggItem(
+            ENTITY_TYPE, 0x161616, 0x5e0000,
+            FabricItemSettings().group(ItemGroup.MISC)
+        )
 
         fun createExampleEntityAttributes(): DefaultAttributeContainer.Builder {
             return createMobAttributes()
@@ -63,7 +73,10 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
                 and {
                     succeeder {
                         findAttackTargetIfNotFound(32.0f)
-                        { it is VoidSnake || it is VoidWorm || it is VoidSquid }
+                        {
+                            it is VoidSnake || it is VoidWorm || it is VoidSquid ||
+                                    it is PlayerEntity && it.uuid in village.publicEnemies
+                        }
                     }
                     walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
                     isEntityTargetValid(MemoryTypes.ATTACK_TARGET, 32.0f)

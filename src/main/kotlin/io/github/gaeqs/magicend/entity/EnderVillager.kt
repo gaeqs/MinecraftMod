@@ -9,8 +9,10 @@ import io.github.gaeqs.magicend.ai.tree.node.*
 import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import io.github.gaeqs.magicend.village.EndVillage
 import net.minecraft.entity.EntityType
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.world.World
 
@@ -131,6 +133,34 @@ open class EnderVillager(
         super.tickMovement()
     }
 
+    override fun damage(source: DamageSource?, amount: Float): Boolean {
+        if (super.damage(source, amount)) {
+
+            if (source != null) {
+                val attacker = source.attacker
+                if (attacker is PlayerEntity) {
+                    village.addNegativeScore(attacker.uuid, amount.toInt())
+                }
+            }
+
+            return false
+        }
+
+        return true
+    }
+
+    override fun onDeath(source: DamageSource?) {
+        super.onDeath(source)
+        if (source != null) {
+            val attacker = source.attacker
+            if (attacker is PlayerEntity) {
+                village.addNegativeScore(attacker.uuid, 70)
+            }
+        }
+    }
+
+    override fun canImmediatelyDespawn(distanceSquared: Double) = false
+
     private fun searchBiggerVillages() {
         val box = boundingBox.expand(64.0, 32.0, 64.0)
         val other = world.getEntitiesByClass(EnderVillager::class.java, box) {
@@ -148,7 +178,10 @@ open class EnderVillager(
                 or {
                     and {
                         findNearestLivingEntities()
-                        isEntityNear { it is VoidSnake || it is VoidWorm || it is VoidSquid }
+                        isEntityNear {
+                            it is VoidSnake || it is VoidWorm || it is VoidSquid ||
+                                    it is PlayerEntity && it.uuid in village.publicEnemies
+                        }
                         lambda {
                             tick {
                                 changeStatus(EnderVillagerStatus.RUNNING_AWAY)

@@ -10,6 +10,7 @@ import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
+import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.min
 import kotlin.random.Random
@@ -29,6 +30,9 @@ class EndVillage {
     private var farmLuckMayBeActive = false
     private var farmLuckLastMillis: Long = 0
     val hasFarmLuck get() = farmLuckMayBeActive && farmLuckLastMillis + (1000 * 60 * 5) > System.currentTimeMillis()
+
+    private val negativeScores = mutableMapOf<UUID, NegativeScore>()
+    val publicEnemies get() = negativeScores.filter { it.value.currentScore > 50 }.keys
 
     fun add(villager: EnderVillager): Boolean {
         if (_villagers.add(villager)) {
@@ -94,6 +98,11 @@ class EndVillage {
         )
     }
 
+    fun addNegativeScore(player: UUID, score: Int) {
+        negativeScores.compute(player) { _, current ->
+            NegativeScore((current?.currentScore ?: 0) + score, System.currentTimeMillis())
+        }
+    }
 
     private fun executeSpawnRitual(shaman: ShamanEnderman) {
         val villagers = villagers
