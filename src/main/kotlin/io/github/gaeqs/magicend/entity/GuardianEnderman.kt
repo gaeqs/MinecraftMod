@@ -78,7 +78,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
                                     it is PlayerEntity && it.uuid in village.publicEnemies
                         }
                     }
-                    walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
+                    walkToEntity(MemoryTypes.ATTACK_TARGET, 2.5f, 1.0f, 32.0f)
                     isEntityTargetValid(MemoryTypes.ATTACK_TARGET, 32.0f)
                     isNearEntity(MemoryTypes.ATTACK_TARGET, 1.5f)
                     succeeder {

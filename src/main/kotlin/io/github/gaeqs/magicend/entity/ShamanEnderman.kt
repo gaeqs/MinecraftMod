@@ -15,7 +15,6 @@ import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.item.ItemGroup
-import net.minecraft.item.Items
 import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.Identifier
@@ -81,7 +80,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
                 MemoryTypes.NEARBY_ITEM_ENTITIES,
                 MemoryTypes.TARGET_ITEM,
                 48.0f
-            ) { it.stack.item == Items.ITEM_FRAME && canNavigateToEntity(it) }
+            ) { it.stack.item == MinecraftMod.VOID_SHARD_ITEM && canNavigateToEntity(it) }
 
             walkToEntity(MemoryTypes.TARGET_ITEM, 1.5f, 1.0f, 48.0f)
             isEntityTargetValid(MemoryTypes.TARGET_ITEM, 48.0f)

@@ -11,8 +11,6 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry
 object MinecraftModClient : ClientModInitializer {
 
     override fun onInitializeClient() {
-        EntityRendererRegistry.INSTANCE.register(MinecraftMod.EXAMPLE_ENTITY)
-        { dispatcher, _ -> ExampleEntityRenderer(dispatcher) }
         EntityRendererRegistry.INSTANCE.register(FarmerEnderman.ENTITY_TYPE)
         { dispatcher, _ -> FarmerEndermanRenderer(dispatcher) }
         EntityRendererRegistry.INSTANCE.register(GuardianEnderman.ENTITY_TYPE)

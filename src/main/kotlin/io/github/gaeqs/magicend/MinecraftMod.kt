@@ -1,7 +1,5 @@
 package io.github.gaeqs.magicend
 
-/*import io.github.gaeqs.magicend.block.EndWindowBlock
-import io.github.gaeqs.magicend.block.EnderCoreBlock*/
 import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.block.*
 import io.github.gaeqs.magicend.entity.*
@@ -11,11 +9,14 @@ import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilde
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.mixin.`object`.builder.SpawnRestrictionAccessor
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.SpawnRestriction
+import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.Heightmap
@@ -27,13 +28,8 @@ import java.util.function.Predicate
 object MinecraftMod : ModInitializer {
 
     const val MOD_ID = "magic_end"
-
-    val EXAMPLE_ENTITY = Registry.register(Registry.ENTITY_TYPE, Identifier(MOD_ID, "example"),
-        FabricEntityTypeBuilder.create(
-            SpawnGroup.CREATURE,
-            EntityType.EntityFactory<ExampleEntity> { type, world -> ExampleEntity(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build()
-    )
+    val VOID_SHARD_IDENTIFIER = Identifier(MOD_ID, "void_shard")
+    val VOID_SHARD_ITEM = Item(FabricItemSettings().group(ItemGroup.MISC))
 
     override fun onInitialize() {
         Registry.register(Registry.BLOCK, EnderCoreBlock.IDENTIFIER, EnderCoreBlock.BLOCK)
@@ -68,6 +64,8 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, ChorusWheat.SEEDS_IDENTIFIER, ChorusWheat.SEEDS_ITEM)
         Registry.register(Registry.ITEM, ChorusWheat.BREAD_IDENTIFIER, ChorusWheat.BREAD_ITEM)
 
+        Registry.register(Registry.ITEM, VOID_SHARD_IDENTIFIER, VOID_SHARD_ITEM)
+
         registerEntities()
         initializeSpawns()
         PointOfInterestTypes.init()
@@ -75,8 +73,6 @@ object MinecraftMod : ModInitializer {
 
 
     private fun registerEntities() {
-        FabricDefaultAttributeRegistry.register(EXAMPLE_ENTITY, ExampleEntity.createExampleEntityAttributes())
-
         Registry.register(Registry.ENTITY_TYPE, ShamanEnderman.IDENTIFIER, ShamanEnderman.ENTITY_TYPE)
         FabricDefaultAttributeRegistry.register(
             ShamanEnderman.ENTITY_TYPE,
