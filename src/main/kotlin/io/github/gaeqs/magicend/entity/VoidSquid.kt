@@ -7,10 +7,7 @@ import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.*
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.minecraft.entity.EntityDimensions
-import net.minecraft.entity.EntityType
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.SpawnGroup
+import net.minecraft.entity.*
 import net.minecraft.entity.ai.control.FlightMoveControl
 import net.minecraft.entity.ai.pathing.BirdNavigation
 import net.minecraft.entity.ai.pathing.EntityNavigation
@@ -18,20 +15,24 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.SpawnEggItem
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.Difficulty
 import net.minecraft.world.World
+import net.minecraft.world.WorldAccess
+import java.util.*
 
 class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, world) {
 
     companion object {
         val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_squid")
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
-            SpawnGroup.CREATURE,
+            SpawnGroup.MONSTER,
             EntityType.EntityFactory<VoidSquid> { type, world -> VoidSquid(type, world) }
         ).dimensions(EntityDimensions.fixed(0.8f, 2.0f)).build()
 
@@ -47,6 +48,16 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.6000000238418579)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
+        }
+
+        fun canSpawn(world: WorldAccess, spawnReason: SpawnReason, pos: BlockPos, random: Random): Boolean {
+            return canMobSpawn(
+                VoidSnake.ENTITY_TYPE,
+                world,
+                spawnReason,
+                pos,
+                random
+            ) && world.difficulty != Difficulty.PEACEFUL
         }
     }
 
@@ -86,6 +97,8 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
 
     override fun handleFallDamage(fallDistance: Float, damageMultiplier: Float) = false
 
+    override fun isDisallowedInPeaceful() = true
+
     private fun initAI() {
         ai.activities += TreeActivity("default", ai, rootLoopUnconditional {
             runAndWait {
@@ -110,15 +123,11 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
 
                     and {
                         findNearestLivingEntities()
-                        findAttackTargetIfNotFound(32.0f) { it is ShamanEnderman }
-                        walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
-                        succeeder {
-                            attack()
+                        or {
+                            findAttackTargetIfNotFound(32.0f) { it is ShamanEnderman }
+                            findAttackTargetIfNotFound(32.0f) { it is EnderVillager }
+                            findAttackTargetIfNotFound(32.0f) { it is PlayerEntity }
                         }
-                    }
-
-                    and {
-                        findAttackTargetIfNotFound(32.0f) { it is EnderVillager }
                         walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
                         succeeder {
                             attack()

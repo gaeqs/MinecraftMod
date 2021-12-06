@@ -89,7 +89,7 @@ open class EnderVillager(
                                 if (entity !is EnderBreadPlateBlockEntity || entity.isEmpty()) return@tick TreeNode.InvocationResult.FAIL
                                 entity.amount--
 
-                                addStatusEffect(StatusEffectInstance(StatusEffects.REGENERATION, 40, 1))
+                                addStatusEffect(StatusEffectInstance(StatusEffects.REGENERATION, 100, 2))
                                 TreeNode.InvocationResult.SUCCESS
                             }
                         }

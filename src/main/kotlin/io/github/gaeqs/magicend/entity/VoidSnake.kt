@@ -10,20 +10,26 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
+import net.minecraft.entity.SpawnReason
 import net.minecraft.entity.attribute.DefaultAttributeContainer
 import net.minecraft.entity.attribute.EntityAttributes
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.SpawnEggItem
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.Difficulty
 import net.minecraft.world.World
+import net.minecraft.world.WorldAccess
+import java.util.*
 
 class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, world) {
 
     companion object {
         val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_snake")
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
-            SpawnGroup.CREATURE,
-            EntityType.EntityFactory<VoidSnake> { type, world -> VoidSnake(type, world) }
+            SpawnGroup.MONSTER,
+            EntityType.EntityFactory(::VoidSnake)
         ).dimensions(EntityDimensions.fixed(1.5f, 0.8f)).build()
 
         val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_snake_spawn_egg")
@@ -39,11 +45,18 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0)
         }
+
+        fun canSpawn(world: WorldAccess, spawnReason: SpawnReason, pos: BlockPos, random: Random): Boolean {
+            return canMobSpawn(ENTITY_TYPE, world, spawnReason, pos, random) && world.difficulty != Difficulty.PEACEFUL
+        }
+
     }
 
     init {
         initAI()
     }
+
+    override fun isDisallowedInPeaceful() = true
 
     private fun initAI() {
         ai.activities += TreeActivity("default", ai, rootLoopUnconditional {
@@ -51,7 +64,10 @@ class VoidSnake(type: EntityType<out VoidSnake>, world: World) : AIEntity(type, 
                 or {
                     and {
                         findNearestLivingEntities()
-                        findAttackTargetIfNotFound(32.0f) { it is EnderVillager }
+                        or {
+                            findAttackTargetIfNotFound(32.0f) { it is EnderVillager }
+                            findAttackTargetIfNotFound(32.0f) { it is PlayerEntity }
+                        }
                         walkToEntity(MemoryTypes.ATTACK_TARGET, 1.5f, 1.0f, 32.0f)
                         succeeder {
                             attack()

@@ -8,11 +8,21 @@ import io.github.gaeqs.magicend.entity.*
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase
+import net.fabricmc.fabric.mixin.`object`.builder.SpawnRestrictionAccessor
 import net.minecraft.entity.EntityDimensions
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
+import net.minecraft.entity.SpawnRestriction
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
+import net.minecraft.world.Heightmap
+import net.minecraft.world.biome.Biome
+import net.minecraft.world.biome.SpawnSettings
+import java.util.function.Consumer
+import java.util.function.Predicate
 
 object MinecraftMod : ModInitializer {
 
@@ -59,6 +69,7 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, ChorusWheat.BREAD_IDENTIFIER, ChorusWheat.BREAD_ITEM)
 
         registerEntities()
+        initializeSpawns()
         PointOfInterestTypes.init()
     }
 
@@ -108,5 +119,34 @@ object MinecraftMod : ModInitializer {
         Registry.register(Registry.ITEM, VoidWorm.EGG_ITEM_IDENTIFIER, VoidWorm.EGG_ITEM)
         Registry.register(Registry.ITEM, VoidSnake.EGG_ITEM_IDENTIFIER, VoidSnake.EGG_ITEM)
         Registry.register(Registry.ITEM, VoidSquid.EGG_ITEM_IDENTIFIER, VoidSquid.EGG_ITEM)
+    }
+
+    private fun initializeSpawns() {
+        val endSelector = Predicate<BiomeSelectionContext> {
+            it.biome.category == Biome.Category.THEEND
+        }
+
+        BiomeModifications.create(VoidWorm.IDENTIFIER).add(ModificationPhase.ADDITIONS, endSelector, Consumer {
+            it.spawnSettings.addSpawn(SpawnGroup.MONSTER, SpawnSettings.SpawnEntry(VoidWorm.ENTITY_TYPE, 3, 2, 4))
+        })
+
+        BiomeModifications.create(VoidSquid.IDENTIFIER).add(ModificationPhase.ADDITIONS, endSelector, Consumer {
+            it.spawnSettings.addSpawn(SpawnGroup.MONSTER, SpawnSettings.SpawnEntry(VoidSquid.ENTITY_TYPE, 2, 2, 4))
+        })
+
+
+        SpawnRestrictionAccessor.callRegister(
+            VoidWorm.ENTITY_TYPE,
+            SpawnRestriction.Location.ON_GROUND,
+            Heightmap.Type.MOTION_BLOCKING_NO_LEAVES
+        ) { _, wAccess, reason, pos, random -> VoidWorm.canSpawn(wAccess, reason, pos, random) }
+
+        SpawnRestrictionAccessor.callRegister(
+            VoidSquid.ENTITY_TYPE,
+            SpawnRestriction.Location.ON_GROUND,
+            Heightmap.Type.MOTION_BLOCKING_NO_LEAVES
+        ) { _, wAccess, reason, pos, random -> VoidSquid.canSpawn(wAccess, reason, pos, random) }
+
+
     }
 }

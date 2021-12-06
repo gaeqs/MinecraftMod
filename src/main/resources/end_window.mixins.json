@@ -1,9 +1,10 @@
 {
   "required": true,
-  "package": "io.github.gaeqs.magicend.mixins",
+  "package": "io.github.gaeqs.magicend.mixin",
   "compatibilityLevel": "JAVA_16",
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": []
+  "mixins": [
+  ]
 }
