@@ -119,7 +119,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
 
         and {
             predicate { patrolling }
-            findRandomWalkTargetToPoint(1.5f, PointOfInterestTypes.ENDER_TABLE, 50.0)
+            findRandomWalkTargetToPoint(1.5f, PointOfInterestTypes.DUMMY, 50.0)
             timed(60, 100) {
                 walkToTarget()
             }
@@ -128,7 +128,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
 
         and {
             predicate { !patrolling }
-            findPointOfInterest(PointOfInterestTypes.ENDER_TABLE, MemoryTypes.POINT_OF_INTEREST, 64)
+            findPointOfInterest(PointOfInterestTypes.DUMMY, MemoryTypes.POINT_OF_INTEREST, 64)
             walkToPosition(MemoryTypes.POINT_OF_INTEREST, 1.5f)
             wait(20)
         }

@@ -5,14 +5,11 @@ import io.github.gaeqs.magicend.block.*
 import io.github.gaeqs.magicend.entity.*
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricDefaultAttributeRegistry
-import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.mixin.`object`.builder.SpawnRestrictionAccessor
-import net.minecraft.entity.EntityDimensions
-import net.minecraft.entity.EntityType
 import net.minecraft.entity.SpawnGroup
 import net.minecraft.entity.SpawnRestriction
 import net.minecraft.item.Item
@@ -34,8 +31,8 @@ object MinecraftMod : ModInitializer {
     override fun onInitialize() {
         Registry.register(Registry.BLOCK, EnderCoreBlock.IDENTIFIER, EnderCoreBlock.BLOCK)
         Registry.register(Registry.ITEM, EnderCoreBlock.IDENTIFIER, EnderCoreBlock.BLOCK_ITEM)
-        Registry.register(Registry.BLOCK, EndTorch.IDENTIFIER, EndTorch.BLOCK)
-        Registry.register(Registry.ITEM, EndTorch.IDENTIFIER, EndTorch.BLOCK_ITEM)
+        Registry.register(Registry.BLOCK, EndTorchBlock.IDENTIFIER, EndTorchBlock.BLOCK)
+        Registry.register(Registry.ITEM, EndTorchBlock.IDENTIFIER, EndTorchBlock.BLOCK_ITEM)
 
         Registry.register(Registry.BLOCK, EndWindowBlock.IDENTIFIER, EndWindowBlock.BLOCK)
         Registry.register(Registry.ITEM, EndWindowBlock.IDENTIFIER, EndWindowBlock.BLOCK_ITEM)
@@ -56,13 +53,16 @@ object MinecraftMod : ModInitializer {
             EnderBreadPlateBlock.BLOCK_ENTITY
         )
 
-        Registry.register(Registry.BLOCK, EnderTable.IDENTIFIER, EnderTable.BLOCK)
-        Registry.register(Registry.ITEM, EnderTable.IDENTIFIER, EnderTable.BLOCK_ITEM)
+        Registry.register(Registry.BLOCK, EnderTableBlock.IDENTIFIER, EnderTableBlock.BLOCK)
+        Registry.register(Registry.ITEM, EnderTableBlock.IDENTIFIER, EnderTableBlock.BLOCK_ITEM)
 
-        Registry.register(Registry.BLOCK, ChorusWheat.IDENTIFIER, ChorusWheat.BLOCK)
-        Registry.register(Registry.ITEM, ChorusWheat.IDENTIFIER, ChorusWheat.WHEAT_ITEM)
-        Registry.register(Registry.ITEM, ChorusWheat.SEEDS_IDENTIFIER, ChorusWheat.SEEDS_ITEM)
-        Registry.register(Registry.ITEM, ChorusWheat.BREAD_IDENTIFIER, ChorusWheat.BREAD_ITEM)
+        Registry.register(Registry.BLOCK, DummyBlock.IDENTIFIER, DummyBlock.BLOCK)
+        Registry.register(Registry.ITEM, DummyBlock.IDENTIFIER, DummyBlock.BLOCK_ITEM)
+
+        Registry.register(Registry.BLOCK, ChorusWheatBlock.IDENTIFIER, ChorusWheatBlock.BLOCK)
+        Registry.register(Registry.ITEM, ChorusWheatBlock.IDENTIFIER, ChorusWheatBlock.WHEAT_ITEM)
+        Registry.register(Registry.ITEM, ChorusWheatBlock.SEEDS_IDENTIFIER, ChorusWheatBlock.SEEDS_ITEM)
+        Registry.register(Registry.ITEM, ChorusWheatBlock.BREAD_IDENTIFIER, ChorusWheatBlock.BREAD_ITEM)
 
         Registry.register(Registry.ITEM, VOID_SHARD_IDENTIFIER, VOID_SHARD_ITEM)
 

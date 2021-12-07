@@ -3,8 +3,9 @@ package io.github.gaeqs.magicend.ai.defaults
 import com.google.common.collect.ImmutableSet
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.block.DragonStatueBlock
+import io.github.gaeqs.magicend.block.DummyBlock
 import io.github.gaeqs.magicend.block.EnderBreadPlateBlock
-import io.github.gaeqs.magicend.block.EnderTable
+import io.github.gaeqs.magicend.block.EnderTableBlock
 import net.fabricmc.fabric.mixin.`object`.builder.PointOfInterestTypeAccessor
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
@@ -26,7 +27,7 @@ object PointOfInterestTypes {
 
     val ENDER_TABLE = register(
         Identifier(MinecraftMod.MOD_ID, "ender_table"),
-        getAllStatesOf(EnderTable.BLOCK), 32, 100
+        getAllStatesOf(EnderTableBlock.BLOCK), 32, 100
     )
 
     val FARMLAND = register(
@@ -35,7 +36,11 @@ object PointOfInterestTypes {
         32, 100
     )
 
+    val DUMMY = register(Identifier(MinecraftMod.MOD_ID, "dummy"),
+        getAllStatesOf(DummyBlock.BLOCK), 32, 100)
+
     fun init() {
+        /* no-op */
         // Blank initialization function.
         // This function inits all the static data.
     }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "magic_end:block/dummy_bottom"
+    },
+    "half=upper": {
+      "model": "magic_end:block/dummy_top"
+    }
+  }
+}

@@ -3,15 +3,11 @@ package io.github.gaeqs.magicend.entity
 import io.github.gaeqs.magicend.MinecraftMod
 import io.github.gaeqs.magicend.ai.defaults.PointOfInterestTypes
 import io.github.gaeqs.magicend.ai.defaults.canReachBlock
-import io.github.gaeqs.magicend.ai.defaults.findPointOfInterest
 import io.github.gaeqs.magicend.ai.defaults.memory.MemoryTypes
 import io.github.gaeqs.magicend.ai.defaults.tree.*
-import io.github.gaeqs.magicend.ai.statemachine.builder.StateMachineBuilder
-import io.github.gaeqs.magicend.ai.statemachine.node.lambda
-import io.github.gaeqs.magicend.ai.statemachine.node.tree
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.node.*
-import io.github.gaeqs.magicend.block.ChorusWheat
+import io.github.gaeqs.magicend.block.ChorusWheatBlock
 import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import net.fabricmc.fabric.api.`object`.builder.v1.entity.FabricEntityTypeBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -26,7 +22,6 @@ import net.minecraft.nbt.NbtCompound
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
-import net.minecraft.util.dynamic.GlobalPos
 import net.minecraft.world.World
 
 class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : EnderVillager(type, world) {
@@ -71,7 +66,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
             findPointOfInterest(PointOfInterestTypes.FARMLAND, MemoryTypes.POINT_OF_INTEREST, 64) {
                 val state = world.getBlockState(it.up())
                 val block = state.block
-                (state.isAir || crops < MAX_CROPS && block is ChorusWheat && block.isMature(state))
+                (state.isAir || crops < MAX_CROPS && block is ChorusWheatBlock && block.isMature(state))
                         && canReachBlock(it, 50)
             }
 
@@ -88,7 +83,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
                                 val block = state.block
 
                                 if (state.isAir) {
-                                    world.setBlockState(blockPos, ChorusWheat.BLOCK.defaultState, 3)
+                                    world.setBlockState(blockPos, ChorusWheatBlock.BLOCK.defaultState, 3)
                                     world.playSound(
                                         null,
                                         blockPos.x.toDouble(),
@@ -103,7 +98,7 @@ class FarmerEnderman(type: EntityType<out FarmerEnderman>, world: World) : Ender
                         return@tick TreeNode.InvocationResult.SUCCESS
                     }
 
-                    if (block is ChorusWheat && block.isMature(state)) {
+                    if (block is ChorusWheatBlock && block.isMature(state)) {
                         world.breakBlock(blockPos, false, this@FarmerEnderman)
                         crops++
                         return@tick TreeNode.InvocationResult.SUCCESS

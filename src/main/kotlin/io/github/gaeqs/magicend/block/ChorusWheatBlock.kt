@@ -21,14 +21,14 @@ import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.BlockView
 import java.util.*
 
-class ChorusWheat : CropBlock(
+class ChorusWheatBlock : CropBlock(
     Settings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)
 ) {
 
 
     companion object {
         val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "chorus_wheat")
-        val BLOCK = ChorusWheat()
+        val BLOCK = ChorusWheatBlock()
         val WHEAT_ITEM = Item(FabricItemSettings().group(ItemGroup.MATERIALS))
 
         val SEEDS_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "chorus_seeds")

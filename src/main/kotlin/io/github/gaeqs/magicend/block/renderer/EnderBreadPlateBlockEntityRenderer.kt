@@ -1,6 +1,6 @@
 package io.github.gaeqs.magicend.block.renderer
 
-import io.github.gaeqs.magicend.block.ChorusWheat
+import io.github.gaeqs.magicend.block.ChorusWheatBlock
 import io.github.gaeqs.magicend.block.entity.EnderBreadPlateBlockEntity
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.OverlayTexture
@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3f
 class EnderBreadPlateBlockEntityRenderer(dispatcher: BlockEntityRenderDispatcher) :
     BlockEntityRenderer<EnderBreadPlateBlockEntity>(dispatcher) {
 
-    private val stack = ItemStack(ChorusWheat.BREAD_ITEM, 1)
+    private val stack = ItemStack(ChorusWheatBlock.BREAD_ITEM, 1)
 
     override fun render(
         entity: EnderBreadPlateBlockEntity,

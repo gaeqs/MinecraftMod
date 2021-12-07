@@ -18,12 +18,12 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import java.util.*
 
-class EndTorch : Block(FabricBlockSettings.of(Material.STONE).strength(2.0f)) {
+class EndTorchBlock : Block(FabricBlockSettings.of(Material.STONE).strength(2.0f)) {
 
 
     companion object {
         val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "end_torch")
-        val BLOCK = EndTorch()
+        val BLOCK = EndTorchBlock()
         val BLOCK_ITEM = BlockItem(BLOCK, FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS))
     }
 

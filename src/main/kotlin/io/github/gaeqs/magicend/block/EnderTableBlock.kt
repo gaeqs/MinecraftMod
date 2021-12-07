@@ -9,21 +9,18 @@ import net.minecraft.block.Material
 import net.minecraft.block.ShapeContext
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemGroup
-import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
-import net.minecraft.world.World
-import java.util.*
 
-class EnderTable : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().strength(2.0f)) {
+class EnderTableBlock : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().strength(2.0f)) {
 
 
     companion object {
         val IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "ender_table")
-        val BLOCK = EnderTable()
+        val BLOCK = EnderTableBlock()
         val BLOCK_ITEM = BlockItem(BLOCK, FabricItemSettings().group(ItemGroup.DECORATIONS))
     }
 
