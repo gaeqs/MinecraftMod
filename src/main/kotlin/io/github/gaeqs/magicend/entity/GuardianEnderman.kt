@@ -30,7 +30,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<GuardianEnderman> { type, world -> GuardianEnderman(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+        ).dimensions(EntityDimensions.fixed(0.8f, 2.9f)).build()
 
         val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "guardian_enderman_spawn_egg")
         val EGG_ITEM = SpawnEggItem(
@@ -44,6 +44,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 80.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5)
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 128.0)
         }
     }
 
@@ -96,7 +97,7 @@ class GuardianEnderman(type: EntityType<out GuardianEnderman>, world: World) : E
         // Check if anybody needs help
         and {
             findEnderVillager(MemoryTypes.HELPING_VILLAGER) { it.status == EnderVillagerStatus.RUNNING_AWAY }
-            walkToEntity(MemoryTypes.HELPING_VILLAGER, 2.5f, 5.0f, 32.0f)
+            walkToEntity(MemoryTypes.HELPING_VILLAGER, 2.5f, 5.0f, 128.0f)
             wait(1)
         }
 

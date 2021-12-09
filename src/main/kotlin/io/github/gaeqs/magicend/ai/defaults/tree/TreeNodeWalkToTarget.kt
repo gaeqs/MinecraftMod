@@ -29,6 +29,7 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
         val walkTarget = ai.getMemory(MemoryTypes.WALK_TARGET)
         if (walkTarget == null || hasReached(walkTarget)) return
         if (!generateNewPath(walkTarget)) return
+        lookTargetPos = walkTarget.lookTarget?.blockPos
 
         initFailed = false
         entity.navigation.startMovingAlong(path, walkTarget.speed.toDouble())
@@ -69,23 +70,20 @@ class TreeNodeWalkToTarget(activity: Activity) : TreeNode(activity) {
     private fun generateNewPath(walkTarget: WalkTarget): Boolean {
         val entity = activity.ai.entity as PathAwareEntity
         val blockPos = walkTarget.lookTarget.blockPos
-        var path = entity.navigation.findPathTo(blockPos, 0)
 
-        if (path == null) {
-            val vec = TargetFinder.findTargetTowards(
-                entity, 10,
-                7, Vec3d.ofBottomCenter(blockPos)
-            )
-            if (vec != null) {
-                path = entity.navigation.findPathTo(vec.x, vec.y, vec.z, 0)
-            }
+        path = entity.navigation.findPathTo(blockPos, 1)
+
+        if (path != null) {
+            return true
         }
 
-        this.path = path
-        if (path == null) return false
+        val vec3d = TargetFinder.findTargetTowards(entity, 100, 10, Vec3d.ofBottomCenter(blockPos))
+        if (vec3d != null) {
+            path = entity.navigation.findPathTo(vec3d.x, vec3d.y, vec3d.z, 1)
+            return path != null
+        }
 
-        this.lookTargetPos = walkTarget.lookTarget.blockPos
-        return true
+        return false
     }
 
     class Builder : TreeNodeBuilder<TreeNodeWalkToTarget> {

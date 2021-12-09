@@ -5,7 +5,6 @@ import net.minecraft.entity.mob.MobEntity
 import net.minecraft.entity.mob.PathAwareEntity
 import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.MathHelper
 import net.minecraft.world.poi.PointOfInterestStorage
 import net.minecraft.world.poi.PointOfInterestType
 
@@ -21,7 +20,7 @@ fun ServerWorld.findPointOfInterest(
         from,
         radius,
         PointOfInterestStorage.OccupationStatus.ANY
-    ).findAny().orElse(null)
+    ).sorted(compareBy { it.getSquaredDistance(from) }).findAny().orElse(null)
 
 }
 

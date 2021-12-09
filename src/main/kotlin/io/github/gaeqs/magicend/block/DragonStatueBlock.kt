@@ -10,7 +10,6 @@ import net.minecraft.block.ShapeContext
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemPlacementContext
-import net.minecraft.particle.ParticleTypes
 import net.minecraft.state.StateManager
 import net.minecraft.util.BlockRotation
 import net.minecraft.util.Identifier
@@ -19,10 +18,8 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
-import net.minecraft.world.World
-import java.util.*
 
-class DragonStatueBlock : Block(FabricBlockSettings.of(Material.STONE).strength(2.0f)) {
+class DragonStatueBlock : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().strength(2.0f)) {
 
 
     companion object {
@@ -33,7 +30,7 @@ class DragonStatueBlock : Block(FabricBlockSettings.of(Material.STONE).strength(
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext)
             : VoxelShape {
-        return VoxelShapes.cuboid(0.1, 0.0, 0.1, 0.9, 0.8, 0.9)
+        return VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
     }
 
     override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {

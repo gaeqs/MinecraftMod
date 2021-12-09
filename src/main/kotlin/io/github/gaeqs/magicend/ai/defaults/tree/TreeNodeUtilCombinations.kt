@@ -7,7 +7,6 @@ import io.github.gaeqs.magicend.ai.tree.node.*
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.util.dynamic.GlobalPos
-import kotlin.math.floor
 
 
 fun TreeNodeParentBuilder<*>.walkToPosition(memory: MemoryType<GlobalPos>, speed: Float) {
@@ -24,7 +23,7 @@ fun TreeNodeParentBuilder<*>.walkToPosition(memory: MemoryType<GlobalPos>, speed
 
                 // We need the timer because the walk target pathfinder works like sh** and needs to reload.
                 // Thx Minecraft. :)
-                timed(10, 20) {
+                timed(100, 150) {
                     // Walk a little.
                     walkToTarget()
                 }

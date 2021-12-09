@@ -69,7 +69,7 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
     override fun onKilledOther(world: ServerWorld?, other: LivingEntity?) {
         super.onKilledOther(world, other)
         kills++
-        if (kills >= 5) {
+        if (kills >= 2) {
             evolve()
         }
     }

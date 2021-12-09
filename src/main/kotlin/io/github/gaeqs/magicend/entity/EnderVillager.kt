@@ -109,7 +109,7 @@ open class EnderVillager(
 
     override fun remove() {
         super.remove()
-        village.refresh()
+        village.remove(this)
     }
 
     override fun tickMovement() {
@@ -182,6 +182,11 @@ open class EnderVillager(
                             it is VoidSnake || it is VoidWorm || it is VoidSquid ||
                                     it is PlayerEntity && it.uuid in village.publicEnemies
                         }
+
+                        succeeder {
+                            setOccupied(MemoryTypes.POINT_OF_INTEREST, false)
+                        }
+
                         lambda {
                             tick {
                                 changeStatus(EnderVillagerStatus.RUNNING_AWAY)

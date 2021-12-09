@@ -33,7 +33,7 @@ class VoidSquidModel<T : LivingEntity>(extra: Float = 0.0f) : EntityModel<T>() {
         textureWidth = 256
         textureHeight = 256
         head = ModelPart(this)
-        head.setPivot(0.0f, 2.0f, 0.0f)
+        head.setPivot(0.0f, 16.0f, 0.0f)
         head.setTextureOffset(0, 0).addCuboid(-5.0f, -3.0f, -5.0f, 9.0f, 3.0f, 9.0f, 0.0f, false)
         head.setTextureOffset(0, 31).addCuboid(-4.0f, -6.0f, -3.0f, 7.0f, 3.0f, 6.0f, 0.0f, false)
         head.setTextureOffset(0, 67).addCuboid(-3.0f, -4.0f, -4.0f, 2.0f, 1.0f, 1.0f, 0.0f, false)
@@ -41,7 +41,7 @@ class VoidSquidModel<T : LivingEntity>(extra: Float = 0.0f) : EntityModel<T>() {
         head.setTextureOffset(0, 109).addCuboid(4.0f, -2.0f, -1.0f, 2.0f, 1.0f, 1.0f, 0.0f, false)
         head.setTextureOffset(3, 142).addCuboid(-7.0f, -2.0f, -1.0f, 2.0f, 1.0f, 1.0f, 0.0f, false)
         body = ModelPart(this)
-        body.setPivot(0.0f, 2.0f, 0.0f)
+        body.setPivot(0.0f, 16.0f, 0.0f)
         body.setTextureOffset(62, 100).addCuboid(-4.0f, 0.0f, -4.0f, 7.0f, 1.0f, 7.0f, 0.0f, false)
         tentacle_1 = ModelPart(this)
         tentacle_1.setPivot(-3.0f, 1.0f, -3.0f)

@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.util.dynamic.GlobalPos
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import java.util.*
@@ -34,6 +35,8 @@ class EndVillage {
     private val negativeScores = mutableMapOf<UUID, NegativeScore>()
     val publicEnemies get() = negativeScores.filter { it.value.currentScore > 50 }.keys
 
+    private val occupiedFarmlands = mutableMapOf<GlobalPos, FarmerEnderman>()
+
     fun add(villager: EnderVillager): Boolean {
         if (_villagers.add(villager)) {
             callToPatrol()
@@ -42,13 +45,14 @@ class EndVillage {
         return false
     }
 
-    fun refresh() {
-        villagers
-    }
-
     fun remove(villager: EnderVillager): Boolean {
         if (_villagers.remove(villager)) {
             callToPatrol()
+
+            if (villager is FarmerEnderman) {
+                occupiedFarmlands.values.removeIf { it == villager }
+            }
+
             return true
         }
         return false
@@ -102,6 +106,19 @@ class EndVillage {
         negativeScores.compute(player) { _, current ->
             NegativeScore((current?.currentScore ?: 0) + score, System.currentTimeMillis())
         }
+    }
+
+    fun isFarmlandOccupied(entity: FarmerEnderman, pos: GlobalPos): Boolean {
+        val enderman = occupiedFarmlands[pos] ?: return false
+        return entity != enderman && !enderman.isAlive
+    }
+
+    fun occupyFarmland(entity: FarmerEnderman, pos: GlobalPos) {
+        occupiedFarmlands[pos] = entity
+    }
+
+    fun releaseFarmland(pos: GlobalPos) {
+        occupiedFarmlands -= pos
     }
 
     private fun executeSpawnRitual(shaman: ShamanEnderman) {

@@ -34,7 +34,7 @@ class VoidSquid(type: EntityType<out VoidSquid>, world: World) : AIEntity(type, 
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.MONSTER,
             EntityType.EntityFactory<VoidSquid> { type, world -> VoidSquid(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.8f, 2.0f)).build()
+        ).dimensions(EntityDimensions.fixed(0.75f, 0.8f)).build()
 
         val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "void_squid_spawn_egg")
         val EGG_ITEM = SpawnEggItem(

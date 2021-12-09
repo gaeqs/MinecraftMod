@@ -27,7 +27,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
         val ENTITY_TYPE = FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE,
             EntityType.EntityFactory<ShamanEnderman> { type, world -> ShamanEnderman(type, world) }
-        ).dimensions(EntityDimensions.fixed(0.8f, 3.0f)).build()
+        ).dimensions(EntityDimensions.fixed(0.8f, 2.9f)).build()
 
         val EGG_ITEM_IDENTIFIER = Identifier(MinecraftMod.MOD_ID, "shaman_enderman_spawn_egg")
         val EGG_ITEM = SpawnEggItem(
@@ -39,6 +39,7 @@ class ShamanEnderman(type: EntityType<out ShamanEnderman>, world: World) : Ender
             return createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 50.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.20000000298023224)
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 128.0)
         }
     }
 

@@ -1,32 +1,34 @@
 package io.github.gaeqs.magicend.ai.tree.node
 
 import io.github.gaeqs.magicend.ai.Activity
-import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
+import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
-class TreeNodeWaiter(activity: Activity, val ticks: Int, val result: InvocationResult = InvocationResult.SUCCESS) :
-    TreeNode(activity) {
-
-    private var current = 0
+class TreeNodeWaiter(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun tick(): InvocationResult {
-        if (current < ticks) {
-            current++
-            return InvocationResult.WAIT
+        if (child.tick() != InvocationResult.WAIT) {
+            child.stop()
+            child.start()
         }
-        return result
+        return InvocationResult.WAIT
     }
 
     override fun start() {
-        current = 0
+        child.start()
     }
 
     override fun stop() {
+        child.stop()
     }
 
-    class Builder(var ticks: Int) : TreeNodeBuilder<TreeNodeWaiter> {
-        override fun build(activity: Activity) = TreeNodeWaiter(activity, ticks)
+    class Builder : TreeNodeUniqueParentBuilder<TreeNodeWaiter>() {
+        override fun build(activity: Activity) = TreeNodeWaiter(activity, child.build(activity))
     }
 }
 
-fun TreeNodeParentBuilder<*>.wait(ticks: Int) = addChild(TreeNodeWaiter.Builder(ticks))
+inline fun TreeNodeParentBuilder<*>.waiter(builder: TreeNodeWaiter.Builder.() -> Unit) =
+    TreeNodeWaiter.Builder().also {
+        addChild(it)
+        builder(it)
+    }
