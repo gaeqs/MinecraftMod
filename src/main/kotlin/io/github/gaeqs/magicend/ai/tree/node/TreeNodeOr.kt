@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeMultipleParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 
+/**
+ * Represents the conditional tree node (?).
+ */
 class TreeNodeOr(activity: Activity, val children: List<TreeNode>) : TreeNode(activity) {
 
     private var result: InvocationResult? = null
@@ -43,11 +46,37 @@ class TreeNodeOr(activity: Activity, val children: List<TreeNode>) : TreeNode(ac
     }
 }
 
+/**
+ * Creates a conditional (?) tree node. You can use the builder param to create children.
+ *
+ * Example:
+ * ```kotlin
+ * or {
+ *   myCustomNode()
+ *   wait(20)
+ * }
+ * ```
+ * If myCustomNode succeeds, the wait node won't be executed and this conditional
+ * node will return [TreeNode.InvocationResult.SUCCESS]
+ */
 inline fun TreeNodeParentBuilder<*>.or(builder: TreeNodeOr.Builder.() -> Unit) = TreeNodeOr.Builder().also {
     addChild(it)
     builder(it)
 }
 
+/**
+ * Creates a conditional (?) tree node as a root node. You can use the builder param to create children.
+ *
+ * Example:
+ * ```kotlin
+ * or {
+ *   myCustomNode()
+ *   wait(20)
+ * }
+ * ```
+ * If myCustomNode succeeds, the wait node won't be executed and this conditional
+ * node will return [TreeNode.InvocationResult.SUCCESS]
+ */
 inline fun rootOr(builder: TreeNodeOr.Builder.() -> Unit): TreeNodeOr.Builder {
     return TreeNodeOr.Builder().also(builder)
 }

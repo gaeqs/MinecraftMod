@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 
+/**
+ * Custom node that allows the user to implement the [start], [tick] and [stop] method as lambdas.
+ */
 class TreeNodeLambda(
     activity: Activity,
     val start: TreeNode.() -> Unit,
@@ -37,6 +40,30 @@ class TreeNodeLambda(
     }
 }
 
+/**
+ * Custom node that allows the user to implement the [TreeNode.start], [TreeNode.tick]
+ * and [TreeNode.stop] method as lambdas.
+ *
+ * Example:
+ * ```kotlin
+ * lambda {
+ *   start {
+ *      println("Start node!")
+ *   }
+ *   tick {
+ *      println("Tick!")
+ *      TreeNode.InvocationResult.SUCCESS
+ *   }
+ *   stop {
+ *      println("Stop node!")
+ *   }
+ * }
+ *
+ * ```
+ * You are not obliged to implement all three lambdas. The default behaviour of start and stop does nothing,
+ * and the default behaviour of tick returns [TreeNode.InvocationResult.FAIL].
+ *
+ */
 inline fun TreeNodeParentBuilder<*>.lambda(builder: TreeNodeLambda.Builder.() -> Unit) =
     TreeNodeLambda.Builder().also {
         addChild(it)

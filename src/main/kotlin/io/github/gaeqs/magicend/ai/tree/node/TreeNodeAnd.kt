@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeMultipleParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 
+/**
+ * Represents the sequence tree node (->).
+ */
 class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(activity) {
 
     private var result: InvocationResult? = null
@@ -43,10 +46,36 @@ class TreeNodeAnd(activity: Activity, val children: List<TreeNode>) : TreeNode(a
     }
 }
 
+/**
+ * Creates a sequence (->) tree node. You can use the builder param to create children.
+ *
+ * Example:
+ * ```kotlin
+ * and {
+ *   myCustomNode()
+ *   wait(20)
+ * }
+ * ```
+ * If myCustomNode fails, the wait node won't be executed and this sequence
+ * node will return [TreeNode.InvocationResult.FAIL]
+ */
 inline fun TreeNodeParentBuilder<*>.and(builder: TreeNodeAnd.Builder.() -> Unit) = TreeNodeAnd.Builder().also {
     addChild(it)
     builder(it)
 }
 
+/**
+ * Creates a sequence (->) tree node as a root. You can use the builder param to create children.
+ *
+ * Example:
+ * ```kotlin
+ * and {
+ *   myCustomNode()
+ *   wait(20)
+ * }
+ * ```
+ * If myCustomNode fails, the wait node won't be executed and this sequence
+ * node will return [TreeNode.InvocationResult.FAIL]
+ */
 inline fun rootAnd(builder: TreeNodeAnd.Builder.() -> Unit): TreeNodeAnd.Builder =
     TreeNodeAnd.Builder().also(builder)

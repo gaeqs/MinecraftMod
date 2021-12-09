@@ -4,7 +4,7 @@ import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.defaults.tree.stayAboveWater
 import io.github.gaeqs.magicend.ai.tree.TreeActivity
 import io.github.gaeqs.magicend.ai.tree.node.and
-import io.github.gaeqs.magicend.ai.tree.node.rootLoopUnconditional
+import io.github.gaeqs.magicend.ai.tree.node.loopUnconditional
 import io.github.gaeqs.magicend.ai.tree.node.rootSimultaneously
 import io.github.gaeqs.magicend.ai.tree.node.wait
 import net.minecraft.entity.EntityType
@@ -30,7 +30,7 @@ open class FlyingAIEntity(
 
     private fun initAI() {
         ai.coreActivity = TreeActivity("core", ai, rootSimultaneously {
-            rootLoopUnconditional {
+            loopUnconditional {
                 and {
                     stayAboveWater(0.5f)
                     wait(10)

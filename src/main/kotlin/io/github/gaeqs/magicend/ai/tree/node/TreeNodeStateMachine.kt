@@ -7,6 +7,11 @@ import io.github.gaeqs.magicend.ai.statemachine.node.StateMachineNode
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 
+/**
+ * A tree node that executes a state machine inside.
+ *
+ * This node includes the states "fail" and "success" that finishes the state machine with the corresponding result.
+ */
 class TreeNodeStateMachine(
     activity: Activity,
     builder: StateMachineBuilder
@@ -77,5 +82,23 @@ class TreeNodeStateMachine(
     }
 }
 
+/**
+ * A tree node that executes a state machine inside.
+ *
+ * This node includes the states "fail" and "success" that finishes the state machine with the corresponding result.
+ *
+ * Example:
+ * ```kotlin
+ * stateMachine {
+ *   startNode = "start"
+ *   lambda("start") {
+ *     tick {
+ *       if (random.nextBoolean()) {
+ *         changeState(if (random.nextBoolean()) "fail" else "success")
+ *       }
+ *     }
+ *   }
+ * ```
+ */
 inline fun TreeNodeParentBuilder<*>.stateMachine(builder: StateMachineBuilder.() -> Unit) =
     TreeNodeStateMachine.Builder(StateMachineBuilder().apply(builder)).also(::addChild)

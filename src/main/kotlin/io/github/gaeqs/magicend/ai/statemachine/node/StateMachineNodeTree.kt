@@ -8,6 +8,9 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 import io.github.gaeqs.magicend.ai.tree.node.TreeNodeNull
 
+/**
+ * A state machine node that executes a behaviour tree.
+ */
 class StateMachineNodeTree(
     name: String,
     activity: Activity,
@@ -65,7 +68,7 @@ class StateMachineNodeTree(
             this.onSuccess = onSuccess
         }
 
-        fun anyResult (onAny : StateMachineNodeTree.() -> Unit) {
+        fun anyResult(onAny: StateMachineNodeTree.() -> Unit) {
             this.onFail = onAny
             this.onSuccess = onAny
         }
@@ -73,6 +76,28 @@ class StateMachineNodeTree(
     }
 }
 
+/**
+ * Creates a state machine that executes a behaviour tree.
+ *
+ * Example:
+ * ```kotlin
+ * tree("tree") {
+ *   root = rootAnd {
+ *     doSomething()
+ *     wait(50)
+ *     doOtherThing()
+ *   }
+ *   success {
+ *     println("Success!")
+ *     changeState("success")
+ *   }
+ *   fail {
+ *     println("Fail!")
+ *     changeState("retry")
+ *   }
+ * }
+ * ```
+ */
 inline fun StateMachineBuilder.tree(name: String, builder: StateMachineNodeTree.Builder.() -> Unit) =
     StateMachineNodeTree.Builder(name).also {
         nodes += it

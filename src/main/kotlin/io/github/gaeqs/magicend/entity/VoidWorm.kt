@@ -46,7 +46,13 @@ class VoidWorm(type: EntityType<out VoidWorm>, world: World) : AIEntity(type, wo
         }
 
         fun canSpawn(world: WorldAccess, spawnReason: SpawnReason, pos: BlockPos, random: Random): Boolean {
-            return canMobSpawn(VoidSnake.ENTITY_TYPE, world, spawnReason, pos, random) && world.difficulty != Difficulty.PEACEFUL
+            return canMobSpawn(
+                VoidSnake.ENTITY_TYPE,
+                world,
+                spawnReason,
+                pos,
+                random
+            ) && world.difficulty != Difficulty.PEACEFUL
         }
     }
 

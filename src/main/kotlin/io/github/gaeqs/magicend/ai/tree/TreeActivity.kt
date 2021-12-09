@@ -5,8 +5,18 @@ import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeBuilder
 import io.github.gaeqs.magicend.ai.tree.node.TreeNode
 
+/**
+ * Represents an activity that contains a behaviour tree inside.
+ *
+ * @param name the name of the activity. This name must be unique and represents this activity.
+ * @param ai the [EntityAI] this activity controls.
+ * @param rootProvider the builder of the behaviour tree.
+ */
 class TreeActivity(name: String, ai: EntityAI, rootProvider: TreeNodeBuilder<*>) : Activity(name, ai) {
 
+    /**
+     * The root node of the behaviour tree.
+     */
     val root: TreeNode = rootProvider.build(this)
 
     override var started = false

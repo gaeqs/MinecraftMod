@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
+/**
+ * A loop node that executes its child node N times.
+ */
 class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : TreeNode(activity) {
 
     private var executed = 0
@@ -33,12 +36,46 @@ class TreeNodeLoopN(activity: Activity, val child: TreeNode, val times: Int) : T
     }
 }
 
+/**
+ * Creates a loop node that executes its child node N times.
+ *
+ * Example:
+ * ```kotlin
+ * loopN(5) {
+ *   debug("Hi!")
+ * }
+ * ```
+ * This example prints "Hi!" five times.
+ *
+ * @param times the number of times the child will be executed.
+ *
+ */
 inline fun TreeNodeParentBuilder<*>.loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit) =
     TreeNodeLoopN.Builder(times).also {
         addChild(it)
         builder(it)
     }
 
+
+/**
+ * Creates a loop node that executes its child node N times as a root node.
+ *
+ * Example:
+ * ```kotlin
+ * loopN(5) {
+ *   lambda {
+ *      tick {
+ *         println("Hi!")
+ *         TreeNode.InvocationResult.SUCCESS
+ *      }
+ *   }
+ * }
+ * ```
+ * This example prints "Hi!" five times.
+ *
+ * @param times the number of times the child will be executed.
+ *
+ */
 inline fun loopN(times: Int, builder: TreeNodeLoopN.Builder.() -> Unit): TreeNodeLoopN.Builder {
     return TreeNodeLoopN.Builder(times).also(builder)
 }

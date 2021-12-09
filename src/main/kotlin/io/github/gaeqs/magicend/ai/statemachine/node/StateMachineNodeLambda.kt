@@ -5,6 +5,9 @@ import io.github.gaeqs.magicend.ai.statemachine.StateMachine
 import io.github.gaeqs.magicend.ai.statemachine.builder.StateMachineBuilder
 import io.github.gaeqs.magicend.ai.statemachine.builder.StateMachineNodeBuilder
 
+/**
+ * Custom node that allows the user to implement the [start], [tick] and [stop] method as lambdas.
+ */
 class StateMachineNodeLambda(
     name: String,
     activity: Activity,
@@ -24,7 +27,7 @@ class StateMachineNodeLambda(
         var tick: StateMachineNodeLambda.() -> Unit = { },
         var stop: StateMachineNodeLambda.() -> Unit = { },
     ) : StateMachineNodeBuilder<StateMachineNodeLambda>(name) {
-        
+
         override fun build(activity: Activity, stateMachine: StateMachine) =
             StateMachineNodeLambda(name, activity, stateMachine, start, tick, stop)
 
@@ -43,6 +46,24 @@ class StateMachineNodeLambda(
     }
 }
 
+/**
+ *  Creates a node that allows the user to implement the [start], [tick] and [stop] method as lambdas.
+ * Example:
+ * ```kotlin
+ * lambda("start") {
+ *   start {
+ *      println("Start node!")
+ *   }
+ *   tick {
+ *      println("Tick!")
+ *   }
+ *   stop {
+ *      println("Stop node!")
+ *   }
+ * }
+ * ```
+ * You are not obliged to implement all three lambdas. The default behaviour of the lambdas does nothing.
+ */
 inline fun StateMachineBuilder.lambda(name: String, builder: StateMachineNodeLambda.Builder.() -> Unit) =
     StateMachineNodeLambda.Builder(name).also {
         nodes += it

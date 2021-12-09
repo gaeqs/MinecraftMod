@@ -5,6 +5,9 @@ import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 import kotlin.random.Random
 
+/**
+ * A node that will execute its child node a maximum period of ticks.
+ */
 class TreeNodeTimed(activity: Activity, val minTicks: Int, val maxTicks: Int, val child: TreeNode) :
     TreeNode(activity) {
 
@@ -46,6 +49,21 @@ class TreeNodeTimed(activity: Activity, val minTicks: Int, val maxTicks: Int, va
     }
 }
 
+/**
+ * Creates a node that will execute its child node a maximum period of ticks.
+ *
+ * Example:
+ * ```kotlin
+ * timed(20, 40) {
+ *   wait(50)
+ * }
+ * ```
+ * The node wait won't be fully finished because timed(20, 40) will return after a random amount
+ * of game ticks between 20 (inclusive) and 40 (exclusive).
+ *
+ * @param minTicks the minimum amount of game ticks (inclusive).
+ * @param maxTicks the maximum amount of game ticks (exclusive).
+ */
 fun TreeNodeParentBuilder<*>.timed(minTicks: Int, maxTicks: Int, builder: TreeNodeTimed.Builder.() -> Unit) =
     TreeNodeTimed.Builder(minTicks, maxTicks).also {
         addChild(it)

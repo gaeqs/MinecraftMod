@@ -4,6 +4,9 @@ import io.github.gaeqs.magicend.ai.Activity
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeParentBuilder
 import io.github.gaeqs.magicend.ai.tree.builder.TreeNodeUniqueParentBuilder
 
+/**
+ * A failer node. This node executes its child node and returns [TreeNode.InvocationResult.FAIL].
+ */
 class TreeNodeFailer(activity: Activity, val child: TreeNode) : TreeNode(activity) {
 
     override fun tick(): InvocationResult {
@@ -24,6 +27,19 @@ class TreeNodeFailer(activity: Activity, val child: TreeNode) : TreeNode(activit
     }
 }
 
+/**
+ * Creates a failer node. This node executes its child node and returns [TreeNode.InvocationResult.FAIL].
+ *
+ * Example:
+ * ```kotlin
+ * and {
+ *   failer {
+ *      wait(20)
+ *   }
+ *   debug("This node is unreachable!")
+ * }
+ * ```
+ */
 inline fun TreeNodeParentBuilder<*>.failer(builder: TreeNodeFailer.Builder.() -> Unit) = TreeNodeFailer.Builder().also {
     addChild(it)
     builder(it)

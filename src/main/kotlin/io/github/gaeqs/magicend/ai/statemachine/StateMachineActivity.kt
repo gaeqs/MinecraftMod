@@ -5,6 +5,13 @@ import io.github.gaeqs.magicend.ai.EntityAI
 import io.github.gaeqs.magicend.ai.statemachine.builder.StateMachineBuilder
 import io.github.gaeqs.magicend.ai.statemachine.node.StateMachineNode
 
+/**
+ * Represents an activity that contains a state machine inside.
+ *
+ * @param name the name of the activity. This name must be unique and represents this activity.
+ * @param ai the [EntityAI] this activity controls.
+ * @param builder the builder of the state machine.
+ */
 class StateMachineActivity(name: String, ai: EntityAI, builder: StateMachineBuilder) : Activity(name, ai),
     StateMachine {
 
